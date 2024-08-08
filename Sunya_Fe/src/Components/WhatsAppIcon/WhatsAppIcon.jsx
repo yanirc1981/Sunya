@@ -1,16 +1,15 @@
-import React from 'react';
-import './WhatsAppIcon.css';
-import {wlogo} from '../Image/Image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
-function WhatsAppIcon() {
+const WhatsAppIcon = () => {
   return (
     <a
-      href="https://api.whatsapp.com/send?phone=573125187204&text=Hola%20vengo%20de%20la%20Web.%20Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20productos"
-      className="whatsapp-icon"
+      href="https://wa.me/5492355517802" // Reemplaza con tu número de WhatsApp
+      className="fixed bottom-4 right-4 bg-green-500 text-white rounded-full p-6 shadow-lg hover:bg-green-600 transition duration-300 transform hover:scale-110 hover:animate-bounce z-50 md:bottom-8 md:right-8"
       target="_blank"
       rel="noopener noreferrer"
     >
-      <img src={wlogo} alt="WhatsApp" className="whatsapp-logo" />
+      <FontAwesomeIcon icon={faWhatsapp} size="3x" />
     </a>
   );
 }
