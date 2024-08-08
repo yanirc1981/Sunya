@@ -16,8 +16,8 @@ const UpLoadImage = () => {
     
     const isImage = files[0].type.startsWith('image/');
     const cloudinaryUrl = isImage 
-      ? 'https://api.cloudinary.com/v1_1/dmbkoargv/image/upload' 
-      : 'https://api.cloudinary.com/v1_1/dmbkoargv/video/upload';
+      ? 'https://api.cloudinary.com/v1_1/djkq5h1et/image/upload' 
+      : 'https://api.cloudinary.com/v1_1/djkq5h1et/video/upload';
     
     const response = await fetch(cloudinaryUrl, {
       method: 'POST',
