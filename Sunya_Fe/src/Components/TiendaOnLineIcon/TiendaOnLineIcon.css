@@ -1,0 +1,36 @@
+/* TiendaOnLineIcon.css */
+.tienda-online-icon {
+  position: fixed;
+  bottom: 110px;
+  left: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 6;
+}
+
+.neon {
+  color: #fff;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #fff,
+    0 0 40px rgb(24, 224, 224), 0 0 80px rgb(24, 224, 224),
+    0 0 90px rgb(24, 224, 224), 0 0 100px rgb(24, 224, 224),
+    0 0 150px rgb(24, 224, 224);
+}
+
+.tienda-online-icon .tienda-image {
+  width: 100px; /* Ajusta el tamaño según tus necesidades */
+  height: auto;
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.tienda-online-icon:hover .tienda-image {
+  transform: scale(1.1); /* Agranda la imagen al pasar el mouse por encima */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Añade una sombra para mayor efecto */
+}
+
+.tienda-online-icon:active .tienda-image {
+  transform: scale(0.95); /* Reduce la imagen al hacer clic */
+  box-shadow: inset 2px 2px 5px #9b9999, inset -2px -2px 5px #ffffff; /* Sombra interna al hacer clic */
+}

@@ -1,0 +1,61 @@
+.cards-container {
+  text-align: center;
+  height: auto;
+}
+
+.carousel-with-title {
+  position: relative;
+}
+
+.carousel-title {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  line-height: 22px;
+  font-weight: bold;
+  z-index: 1;
+  background-color: orangered;
+  padding: 10px 20px;
+  border-radius: 0px 40px 40px 40px;
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.5);
+  font-family: Verdana, Tahoma, Geneva, sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+.carousel_container {
+  margin-top: 1px; /* Ajusta el margen superior según necesites */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #000;
+  border-radius: 50%;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.item-title {
+  background-color: rgba(221, 217, 217, 0.4);
+  color: black;
+  padding: 5px 5px;
+  margin-bottom: 330px;
+  border-radius: 30px;
+  border: orangered 2px solid;
+  width: 300px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.subtitles {
+  margin-top: 5px;
+}
+
+.subtitles span {
+  padding: 1px 1px;
+  font-size: 1rem;
+  display: inline-block;
+}

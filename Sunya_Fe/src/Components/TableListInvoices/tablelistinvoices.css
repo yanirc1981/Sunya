@@ -1,0 +1,8 @@
+.div_container_table {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

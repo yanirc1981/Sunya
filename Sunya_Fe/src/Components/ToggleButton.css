@@ -1,0 +1,30 @@
+.toggle-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    padding: 0;
+  }
+  
+  .toggle-button svg {
+    font-size: 24px;
+  }
+  
+  .toggle-button.active {
+    color: green;
+  }
+  
+  .toggle-button.inactive {
+    color: red;
+  }
+  
+  .toggle-button.active svg {
+    transform: translateX(50%);
+  }
+
+  .toggle-button:hover {
+    opacity: 0.9;
+    transition: opacity 0.3s;
+  }
+  

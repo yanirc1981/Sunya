@@ -1,0 +1,29 @@
+
+
+
+.strong_create {
+    color: white;
+    margin-right: 10px;
+}
+
+.form-control {
+    height: 27px;
+}
+
+.row {
+    margin-left: 1px;
+}
+
+label.required:after {
+    content: " *";
+    color: red; /* Color del asterisco */
+  }
+
+.check_invoice {
+    margin-left: 10px;
+}
+
+.div_p_invoice {
+    display: flex;
+    text-align: justify;
+}

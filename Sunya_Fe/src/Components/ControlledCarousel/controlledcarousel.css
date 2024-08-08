@@ -1,0 +1,112 @@
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(248, 212, 165, 0.5); /* Ajusta la opacidad según necesites */
+}
+
+
+
+.watermark {
+  display: flex;
+	align-items: center;
+	justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3; 
+  opacity: 0.2; 
+}
+
+.watermark-logo {
+  max-width: 300px; 
+}
+
+.container_scroll {
+	width: 100%;
+	height: 100%;
+	background-color: #c9d6df;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  margin-top: 200px;
+}
+
+.scroll-text {
+  position: absolute;
+  margin-right: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px; /* Ajusta el tamaño del texto según necesites */
+  color: white; /* Ajusta el color del texto según necesites */
+  
+}
+
+.scroll-text span {
+  writing-mode: vertical-rl;
+}
+
+
+.field {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 300px;
+}
+
+.mouse {
+	width: 50px;
+	height: 90px;
+	border: 3px solid #ffffff;
+	border-radius: 60px;
+	position: relative;
+	&::before {
+		content: '';
+		width: 12px;
+		height: 12px;
+		position: absolute;
+		top: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #ffffff;
+		border-radius: 50%;
+		opacity: 1;
+		animation: wheel 2s infinite;
+		-webkit-animation: wheel 2s infinite;
+	}
+}
+
+@keyframes wheel {
+	to {
+		opacity: 0;
+		top: 60px;
+	}
+}
+
+@-webkit-keyframes wheel {
+	to {
+		opacity: 0;
+		top: 60px;
+	}
+}

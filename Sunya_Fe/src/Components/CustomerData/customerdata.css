@@ -1,0 +1,9 @@
+.required-field {
+    color: red !important;
+    font-size: smaller;   
+  }
+
+  .required-fieldA {
+    color: blue !important;
+    font-size: smaller;
+  }

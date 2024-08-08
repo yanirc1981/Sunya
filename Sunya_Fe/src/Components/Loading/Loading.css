@@ -1,0 +1,19 @@
+/* Loading.css */
+.loading-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orangered; 
+    z-index: 9999;
+  }
+  
+  .logo_app {
+    width: 450px; /* Ajusta el tamaño según tu logo */
+    height: auto;
+  }
+  

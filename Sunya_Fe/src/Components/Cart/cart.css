@@ -1,0 +1,56 @@
+/* Encapsulamos el CSS con una clase contenedora específica para el componente */
+.cart-container {
+    padding: 20px;
+  }
+  
+  .cart-span {
+    font-weight: bold;
+  }
+  
+  .cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+  
+  .cart-sidebar-content {
+    padding: 20px;
+  }
+  
+  .cart-sidebar .img-fluid {
+    max-width: 50px;
+  }
+  
+  .cart-img {
+    max-width: 150px;
+  }
+  
+  .cart-input-number {
+    width: 80px;
+    text-align: center;
+  }
+  
+  .cart-input-checkbox {
+    margin-right: 10px;
+  }
+  
+  .cart-input-number {
+    margin-left: 10px;
+  }
+  
+  .cart-button {
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .cart-sidebar {
+      width: 100%;
+    }
+  }
+  

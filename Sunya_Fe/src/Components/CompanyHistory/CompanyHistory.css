@@ -1,0 +1,130 @@
+.history-section {
+  position: relative;
+  width: 100%;
+  height: 90vh; /* Ajusta según tus necesidades */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.history-section .overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Opacidad para el video de fondo */
+}
+
+.history-section .content-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 650px;
+  padding: 20px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 40px;
+  color: #ffffff;
+  text-align: center;
+  z-index: 5; /* Asegura que el contenido esté por encima de la capa de video */
+}
+
+.history-section p {
+  margin-bottom: 0;
+  color: #ffffff;
+  text-align: center;
+  line-height: 14px;
+  font-family: Helvetica, Helvetica Neue, Arial, sans-serif;
+}
+
+.play-button-container {
+  position: absolute;
+  
+  bottom: 35px; /* Ajusta la posición vertical */
+  margin-bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.play-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-button span {
+  font-size: 50px;
+  color: #ff0000;
+}
+
+.image-5 {
+  width: 210px; /* Ajusta el ancho de la primera imagen */
+  transition: transform 0.3s ease,
+}
+
+.image-5:hover {
+  transform: scale(1.1);
+}
+
+.modal-open::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 69, 0, 0.7); /* Fondo orangered con opacidad */
+  z-index: 1050; /* Coloca la capa por encima de todo el contenido pero debajo del modal */
+}
+
+.modal-video-body {
+  position: relative;
+  padding: 0;
+}
+
+.modal-video-body .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  color: black;
+  cursor: pointer;
+}
+
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.embed-responsive-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+}

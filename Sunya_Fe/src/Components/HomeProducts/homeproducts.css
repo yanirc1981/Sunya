@@ -1,0 +1,98 @@
+.cart_item_message {
+  margin-top: -5px;
+  margin-left: 5px;
+  color: black;
+}
+
+.h2_tittleStore {
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: 100;
+  letter-spacing: 3px;
+  position: relative;
+  padding: 28px 0px 4px;
+}
+
+.p_Store {
+  font-size: 14px;
+  color: #282828;
+  font-weight: 200;
+  letter-spacing: 0.5px;
+  line-height: 17px;
+}
+
+.icon_cart_store {
+  color: #000000;
+  font-size: 22px;
+  margin-left: 30px;
+}
+
+.icon_cart_store:hover {
+  color: orangered;
+  
+}
+
+.div_store_icons {
+  display: flex;
+  
+  justify-content: center;
+}
+
+.container_icons {
+  width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 25px;
+}
+
+.inner-sin-feature {
+  text-align: center;
+  border: 3px dotted #000000;
+  padding-bottom: 20px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.inner-sin-feature .icon {
+  color: #000000;
+  font-size: 27px;
+  background: #fff;
+  padding: 6px;
+  margin-top: -18px;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.f-content h6 {
+  font-size: 18px;
+  color: #292929;
+  line-height: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.f-content p {
+  font-size: 14px;
+  font-weight: 200;
+  padding: 0px 15px;
+  font-style: italic;
+}
+
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.4;
+  width: 200px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+}
+
+.HomeProducts-img-small {
+  width: 150px; /* Ajusta el tamaño según sea necesario */
+  height: auto; /* Mantiene la proporción de la imagen */
+}

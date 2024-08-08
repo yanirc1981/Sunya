@@ -1,0 +1,9 @@
+.container_placeorder {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.message_order_delivery{
+    color:red;
+    font-size: 12px;
+}

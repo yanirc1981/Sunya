@@ -1,0 +1,12 @@
+.activities-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+
+.activities-list .list-group-item {
+  width: calc(20% - 20px);
+  margin: 10px;
+  
+}

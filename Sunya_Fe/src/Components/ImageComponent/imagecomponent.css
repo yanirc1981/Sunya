@@ -1,0 +1,13 @@
+.image-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+  
+  .component-img {
+    display: block;
+    width: 100%;
+   height: 800px;
+  }
+  

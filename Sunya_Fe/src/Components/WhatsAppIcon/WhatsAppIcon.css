@@ -1,0 +1,25 @@
+
+.whatsapp-icon {
+    position: fixed;
+    bottom: 110px;
+    right: 25px;
+    z-index: 6;
+  }
+
+  .whatsapp-logo {
+    width: 170px;  /* Ajusta el tamaño según tus necesidades */
+    height: auto;  /* Mantén la proporción de la imagen */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+  }
+  
+  .whatsapp-icon:hover .whatsapp-logo {
+    transform: scale(1.1); /* Agranda la imagen al pasar el mouse por encima */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Añade una sombra para mayor efecto */
+    
+  }
+  
+  .whatsapp-icon:active .whatsapp-logo {
+    transform: scale(0.95); /* Reduce la imagen al hacer clic */
+    box-shadow: inset 2px 2px 5px #9b9999, inset -2px -2px 5px #ffffff; /* Sombra interna al hacer clic */
+  }
