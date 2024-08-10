@@ -1,8 +1,5 @@
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import { Link, useHistory } from 'react-router-dom';
-import { BsCart3 } from "react-icons/bs";
-import './product.css';
+import { BsCart3 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   cleanCartItems,
@@ -10,7 +7,6 @@ import {
   postAddToCart,
 } from '../../Redux/Actions/actions';
 import { useEffect, useMemo } from 'react';
-
 
 function Product(props) {
   const { product } = props;
@@ -50,7 +46,6 @@ function Product(props) {
           postAddToCart({ headers, id, quantity, productId })
         );
         if (response.success) {
-          
           dispatch(cleanCartItems());
           dispatch(getCartItems({ headers, id }));
         }
@@ -64,7 +59,6 @@ function Product(props) {
           postAddToCart({ headers, id, quantity, productId })
         );
         if (response.success) {
-         
           dispatch(cleanCartItems());
           dispatch(getCartItems({ headers, id }));
         }
@@ -84,52 +78,49 @@ function Product(props) {
   };
 
   return (
-    <Card className="product-card border-0">
+    <div className="border-0 shadow-lg rounded-md overflow-hidden bg-white">
       <Link to={`/product/${product.id}`}>
-        <div className="card-img-container">
-          <Card.Img
-            variant="top"
+        <div className="w-full h-64 overflow-hidden">
+          <img
             src={product.image}
-            className="product-image"
+            alt={product.name}
+            className="w-full h-full object-cover"
           />
         </div>
       </Link>
-      <Card.Body className="text-center">
-        <Card.Title>
-          {' '}
-          <strong>{product.name}</strong>
-        </Card.Title>
-        <Card.Text>{product.slug}</Card.Text>
-        <Card.Text
-          style={{
-            color: 'orangered',
-          }}
-        >
-         <strong>$  {formatPrice(product.price)}</strong> 
-        </Card.Text>
+      <div className="p-4 text-center">
+        <h2 className="text-lg font-bold mb-2">{product.name}</h2>
+        <p className="text-sm text-gray-500">{product.slug}</p>
+        <p className="text-xl text-orangered font-semibold mb-2">
+          {formatPrice(product.price)}
+        </p>
         {product.countInStock === 0 ? (
-          <Button varient="light" disabled>
+          <button
+            className="bg-gray-200 text-gray-500 px-4 py-2 rounded-md cursor-not-allowed"
+            disabled
+          >
             Agotado
-          </Button>
+          </button>
         ) : (
           <button
-            className="button_card"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
             onClick={userInfo.token ? () => addToCartHandler(product.id) : null}
           >
             {userInfo.token ? (
-              <div className='link_products'>
-                <BsCart3  size={18} /> 
+              <div className="flex items-center justify-center">
+                <BsCart3 size={18} />
               </div>
             ) : (
-              <Link to="/login" className="link_products">
-                <BsCart3  size={18} /> 
+              <Link to="/login" className="flex items-center justify-center">
+                <BsCart3 size={18} />
               </Link>
             )}
           </button>
         )}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 export default Product;
+
