@@ -1,16 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
-import { logo } from '../Image/Image';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaSignOutAlt, FaLock, FaUserPlus, FaHome } from 'react-icons/fa';
-import './header.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { cleanDetailUser } from '../../Redux/Actions/actions';
 import { adminLinks2, cashierLinks, clientLinks } from '../../Links/Links';
+import logo from '../../assets/img/logoSunya.png';
+import './header.css';
+import React, { useState, useRef, useEffect } from 'react';
 
 function Header() {
   const dispatch = useDispatch();
@@ -20,136 +16,123 @@ function Header() {
   const isAdmin = userInfo?.user?.id_role === 3;
   const isCashier = userInfo?.user?.id_role === 2;
   const isSuperAdmin = userInfo?.user?.id_role === 4;
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const handleLogout = () => {
     dispatch(cleanDetailUser());
-
     history.push('/');
   };
 
+  const handleToggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <>
-      <Navbar expand="lg" className="container_navbar">
-        <Container className="container_navbar">
-          <Navbar.Brand as={Link} to="/">
-            <img
-              src={logo}
-              alt="Logo de la empresa"
-              width="150px"
-              height="auto"
-              className="d-inline-block align-top icon_logo_navbar"
-            />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="ms-auto">
-              <Nav.Link
-                as={Link}
-                to="/carousel_products"
-                className="link_header"
-              >
-                PRODUCTOS
-              </Nav.Link>
-              <Nav.Link as={Link} to="/partner" className="link_header">
-                ALIADOS
-              </Nav.Link>
-              <Nav.Link as={Link} to="/company" className="link_header">
-                EMPRESA
-              </Nav.Link>
-              <Nav.Link as={Link} to="/social" className="link_header">
-                NOTICIAS
-              </Nav.Link>
+    <nav className="bg-yellow-200">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="flex space-x-7">
+            <Link to="/" className="items-center flex-shrink-0 h-32 w-32 sm:block hidden mt-6">
+              <img src={logo} alt="Company Logo" className="h-full w-full object-contain" />
+            </Link>
+          </div>
+          <div className="hidden md:flex items-center space-x-3">
+            <NavLink to="/carousel_products" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+              PRODUCTOS
+            </NavLink>
+            <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+              ALIADOS
+            </NavLink>
+            <NavLink to="/company" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+              EMPRESA
+            </NavLink>
+            <NavLink to="/social" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+              NOTICIAS
+            </NavLink>
 
-              {isAdmin || isSuperAdmin ? (
-                // Menú del administrador
-                <NavDropdown
-                  title={<><strong>Bienvenido!, {userInfo.user.name || userInfo.user.nameCompany}. </strong></>}
-                  id="collapsible-nav-dropdown"
-                >
-                  {adminLinks2.map((link, index) => (
-                    <NavDropdown.Item key={index} as={NavLink} to={link.path}>
-                      {link.icon} {link.text}
-                    </NavDropdown.Item>
-                  ))}
-
-                  <NavDropdown.Divider />
-                  <NavLink to="/">
-                    <NavDropdown.Item href="#home">
-                      <FaHome /> Inicio
-                    </NavDropdown.Item>
-                  </NavLink>
-                  <NavDropdown.Item href="#home" onClick={handleLogout}>
-                    <FaSignOutAlt /> Cerrar sesión
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : // Menú del cliente
-              isClient ? (
-                <NavDropdown
-                title={<><strong>Bienvenido!, {userInfo.user.name}. </strong></>}
-                  id="collapsible-nav-dropdown"
-                >
-                  {clientLinks.map((link, index) => (
-                    <NavDropdown.Item key={index} as={NavLink} to={link.path}>
-                      {link.icon} {link.text}
-                    </NavDropdown.Item>
-                  ))}
-                  <NavLink to="/">
-                    <NavDropdown.Item href="#home">
-                      <FaHome /> Inicio
-                    </NavDropdown.Item>
-                  </NavLink>
-
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#home" onClick={handleLogout}>
-                    <FaSignOutAlt /> Cerrar sesión
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : isCashier ? (
-                <NavDropdown
-                title={<><strong>Bienvenido!, {userInfo.user.name}. </strong></>}
-                  id="collapsible-nav-dropdown"
-                >
-                  {cashierLinks.map((link, index) => (
-                    <NavDropdown.Item key={index} as={NavLink} to={link.path}>
-                      {link.icon} {link.text}
-                    </NavDropdown.Item>
-                  ))}
-                  <NavLink to="/">
-                    <NavDropdown.Item href="#home">
-                      <FaHome /> Inicio
-                    </NavDropdown.Item>
-                  </NavLink>
-
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item href="#home" onClick={handleLogout}>
-                    <FaSignOutAlt /> Cerrar sesión
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <NavDropdown title="CONECTAR" id="basic-nav-dropdown">
-                  <NavLink to="/login">
-                    <NavDropdown.Item href="#ingresar">
-                      <FaLock /> Iniciar sesión
-                    </NavDropdown.Item>
-                  </NavLink>
-                  <NavLink to="/registrar">
-                    <NavDropdown.Item href="#SignUp">
-                      <FaUserPlus /> Crear cuenta
-                    </NavDropdown.Item>
-                  </NavLink>
-                  <NavDropdown.Divider />
-                  <NavLink to="/">
-                    <NavDropdown.Item href="#home">
-                      <FaHome /> Inicio
-                    </NavDropdown.Item>
-                  </NavLink>
-                </NavDropdown>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </>
+            {isAdmin || isSuperAdmin || isClient || isCashier ? (
+              <div className="relative inline-block text-left" ref={dropdownRef}>
+                <div>
+                  <button onClick={handleToggleDropdown} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    Hola!, {userInfo.user.name || userInfo.user.nameCompany}
+                  </button>
+                </div>
+                {isDropdownOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                    <div className="py-1">
+                      {isAdmin || isSuperAdmin ? adminLinks2.map((link, index) => (
+                        <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          {link.icon} {link.text}
+                        </NavLink>
+                      )) : isClient ? clientLinks.map((link, index) => (
+                        <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          {link.icon} {link.text}
+                        </NavLink>
+                      )) : isCashier && cashierLinks.map((link, index) => (
+                        <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          {link.icon} {link.text}
+                        </NavLink>
+                      ))}
+                      <div className="border-t border-gray-100"></div>
+                      <NavLink to="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FaHome /> Inicio
+                      </NavLink>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <FaSignOutAlt /> Cerrar Sesión
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="relative inline-block text-left" ref={dropdownRef}>
+                <div>
+                  <button onClick={handleToggleDropdown} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    CONECTAR
+                  </button>
+                </div>
+                {isDropdownOpen && (
+                  <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                    <div className="py-1">
+                      <NavLink to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FaLock /> Iniciar Sesión
+                      </NavLink>
+                      <NavLink to="/registrar" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FaUserPlus /> Crear Cuenta
+                      </NavLink>
+                      <div className="border-t border-gray-100"></div>
+                      <NavLink to="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FaHome /> Inicio
+                      </NavLink>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 }
 
 export default Header;
+
