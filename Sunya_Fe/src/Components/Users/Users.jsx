@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { cleanUsersAdmin, getUsersAdmin } from '../../Redux/Actions/actions';
 import { FaEdit, FaSearch, FaRedoAlt } from 'react-icons/fa';
-import './users.css';
 import EditProfile from '../EditProfile/EditProfile';
 
 const Users = () => {
@@ -11,7 +10,7 @@ const Users = () => {
   const userInfo = useSelector((state) => state.userInfo);
   const users = useSelector((state) => state.users);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,10 +19,10 @@ const Users = () => {
     const token = userInfo.token;
     const headers = { Authorization: `Bearer ${token}` };
 
-    setIsLoading(true); // Activar isLoading al comenzar la carga
+    setIsLoading(true);
 
     dispatch(getUsersAdmin({ headers }))
-      .then(() => setIsLoading(false)) // Desactivar isLoading cuando la carga está completa
+      .then(() => setIsLoading(false))
       .catch(() => setIsLoading(false));
 
     return () => {
@@ -45,7 +44,6 @@ const Users = () => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    // Filtra los usuarios basados en el término de búsqueda
     const filtered = users.filter(
       (user) => user.email.includes(term) || user.n_document.includes(term)
     );
@@ -53,164 +51,170 @@ const Users = () => {
   };
 
   return (
-    <div className="container_tableUsers">
-      <div className="search-container">
-        <FaSearch className="icon_search_1" />
-        <Form.Group controlId="searchTerm" className="mb-2">
-          <Form.Control
-            type="text"
-            placeholder="Buscar por documento ó email"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="search-input"
-          />
-        </Form.Group>
+    <div className="container mx-auto p-4">
+      <div className="flex items-center mb-4">
+        <FaSearch className="text-gray-500 mr-2" />
+        <input
+          type="text"
+          placeholder="Buscar por documento ó email"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="p-2 border border-gray-300 rounded w-full"
+        />
         <FaRedoAlt
-          variant="secondary"
           onClick={() => setSearchTerm('')}
-          className="icon_search"
+          className="text-gray-500 ml-2 cursor-pointer"
         />
       </div>
       {isLoading ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Cargando...</span>
-        </Spinner>
+        <div className="flex justify-center items-center">
+          <svg className="animate-spin h-5 w-5 text-gray-500" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            ></path>
+          </svg>
+        </div>
       ) : (
-        <Table responsive className="table table-hover table-striped">
-          <thead className="thead-dark">
-            <tr>
-              <th>ID documento</th>
-              <th>Tipo persona</th>
-              <th>Nombres</th>
-              <th>Apellidos</th>
-              <th>Razon social</th>
-              <th>Correo electronico</th>
-              <th>Telefono</th>
-              <th>Estado</th>
-              <th>Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchTerm === ''
-              ? // Si el término de búsqueda está vacío, renderizar todos los usuarios
-                users.map((user, index) => {
-                  const userStatus = user.active ? 'activo' : 'inactivo';
-                  const personType = user.person_type === "Person" ? "Persona" : "Compañia"
-                  let userRol;
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr className="bg-botonVerde text-white">
+                <th className="py-2 px-4 border-b">ID documento</th>
+                <th className="py-2 px-4 border-b">Tipo persona</th>
+                <th className="py-2 px-4 border-b">Nombres</th>
+                <th className="py-2 px-4 border-b">Apellidos</th>
+                <th className="py-2 px-4 border-b">Razon social</th>
+                <th className="py-2 px-4 border-b">Correo electronico</th>
+                <th className="py-2 px-4 border-b">Telefono</th>
+                <th className="py-2 px-4 border-b">Estado</th>
+                <th className="py-2 px-4 border-b">Rol</th>
+                <th className="py-2 px-4 border-b">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {searchTerm === ''
+                ? users.map((user, index) => {
+                    const userStatus = user.active ? 'activo' : 'inactivo';
+                    const personType = user.person_type === "Person" ? "Persona" : "Compañia";
+                    let userRol;
 
-                  switch (user.id_role) {
-                    case 1:
-                      userRol = 'Usuario';
-                      break;
-                    case 2:
-                      userRol = 'Cajero';
-                      break;
-                    case 3:
-                      userRol = 'Admin';
-                      break;
-                    case 4:
-                      userRol = 'SuperAdmin';
-                      break;
-                    default:
-                      userRol = 'Desconocido';
-                  }
+                    switch (user.id_role) {
+                      case 1:
+                        userRol = 'Usuario';
+                        break;
+                      case 2:
+                        userRol = 'Cajero';
+                        break;
+                      case 3:
+                        userRol = 'Admin';
+                        break;
+                      case 4:
+                        userRol = 'SuperAdmin';
+                        break;
+                      default:
+                        userRol = 'Desconocido';
+                    }
 
-                  return (
-                    <tr key={index}>
-                      <td>{user.n_document}</td>
-                      <td>{personType}</td>
-                      <td>{user.first_name}</td>
-                      <td>{user.last_name}</td>
-                      <td>{user.nameCompany}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone}</td>
-                      <td>{userStatus}</td>
-                      <td>{userRol}</td>
-                      <td>
-                        <FaEdit
-                          onClick={() => handleEdit(user)}
-                          className="icon_edit"
-                          title="Modificar info"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })
-              : // Si hay un término de búsqueda, renderizar los usuarios filtrados
-                filteredUsers.map((user, index) => {
-                  const userStatus = user.active ? 'activo' : 'inactivo';
-                  const personType = user.person_type === "Person" ? "Persona" : "Compañia"
-                  let userRol;
+                    return (
+                      <tr key={index}>
+                        <td className="py-2 px-4 border-b">{user.n_document}</td>
+                        <td className="py-2 px-4 border-b">{personType}</td>
+                        <td className="py-2 px-4 border-b">{user.first_name}</td>
+                        <td className="py-2 px-4 border-b">{user.last_name}</td>
+                        <td className="py-2 px-4 border-b">{user.nameCompany}</td>
+                        <td className="py-2 px-4 border-b">{user.email}</td>
+                        <td className="py-2 px-4 border-b">{user.phone}</td>
+                        <td className="py-2 px-4 border-b">{userStatus}</td>
+                        <td className="py-2 px-4 border-b">{userRol}</td>
+                        <td className="py-2 px-4 border-b">
+                          <FaEdit
+                            onClick={() => handleEdit(user)}
+                            className="text-botonVerde cursor-pointer"
+                            title="Modificar info"
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })
+                : filteredUsers.map((user, index) => {
+                    const userStatus = user.active ? 'activo' : 'inactivo';
+                    const personType = user.person_type === "Person" ? "Persona" : "Compañia";
+                    let userRol;
 
-                  switch (user.id_role) {
-                    case 1:
-                      userRol = 'Usuario';
-                      break;
-                    case 2:
-                      userRol = 'Cajero';
-                      break;
-                    case 3:
-                      userRol = 'Admin';
-                      break;
-                    case 4:
-                      userRol = 'SuperAdmin';
-                      break;
-                    default:
-                      userRol = 'Desconocido';
-                  }
+                    switch (user.id_role) {
+                      case 1:
+                        userRol = 'Usuario';
+                        break;
+                      case 2:
+                        userRol = 'Cajero';
+                        break;
+                      case 3:
+                        userRol = 'Admin';
+                        break;
+                      case 4:
+                        userRol = 'SuperAdmin';
+                        break;
+                      default:
+                        userRol = 'Desconocido';
+                    }
 
-                  return (
-                    <tr key={index}>
-                      <td>{user.n_document}</td>
-                      <td>{personType}</td>
-                      <td>{user.first_name}</td>
-                      <td>{user.last_name}</td>
-                      <td>{user.nameCompany}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone}</td>
-                      <td>{userStatus}</td>
-                      <td>{userRol}</td>
-                      <td>
-                        <FaEdit
-                          onClick={() => handleEdit(user)}
-                          style={{
-                            cursor: 'pointer',
-                            marginRight: '10px',
-                            marginLeft: '10px',
-                            color: 'blue',
-                          }}
-                          title="Modificar info"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-          </tbody>
-        </Table>
+                    return (
+                      <tr key={index}>
+                        <td className="py-2 px-4 border-b">{user.n_document}</td>
+                        <td className="py-2 px-4 border-b">{personType}</td>
+                        <td className="py-2 px-4 border-b">{user.first_name}</td>
+                        <td className="py-2 px-4 border-b">{user.last_name}</td>
+                        <td className="py-2 px-4 border-b">{user.nameCompany}</td>
+                        <td className="py-2 px-4 border-b">{user.email}</td>
+                        <td className="py-2 px-4 border-b">{user.phone}</td>
+                        <td className="py-2 px-4 border-b">{userStatus}</td>
+                        <td className="py-2 px-4 border-b">{userRol}</td>
+                        <td className="py-2 px-4 border-b">
+                          <FaEdit
+                            onClick={() => handleEdit(user)}
+                            className="text-botonVerde cursor-pointer"
+                            title="Modificar info"
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+            </tbody>
+          </table>
+        </div>
       )}
       {selectedUser && (
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {' '}
-              <h2>
-                Editar información del usuario con ID: {selectedUser.n_document}
-              </h2>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <div
+          className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50`}
+          onClick={handleCloseModal}
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl mb-4">
+              Editar información del usuario con ID: {selectedUser.n_document}
+            </h2>
             <EditProfile user={selectedUser} setShowModal={setShowModal} />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            <button
+              onClick={handleCloseModal}
+              className="mt-4 p-2 bg-gray-300 rounded hover:bg-gray-400"
+            >
               Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
 export default Users;
+

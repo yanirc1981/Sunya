@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Table, Modal, Button, Form, Spinner } from 'react-bootstrap';
-import { cleanCustomersAdmin, getCustomersAdmin } from '../../Redux/Actions/actions';
-import { FaEdit, FaSearch, FaRedoAlt } from 'react-icons/fa';
-
-
-//import EditCustomer from '../EditCustomer/EditCustomer';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  cleanCustomersAdmin,
+  getCustomersAdmin,
+} from "../../Redux/Actions/actions";
+import { FaEdit, FaSearch, FaRedoAlt } from "react-icons/fa";
 
 const Customers = () => {
   const dispatch = useDispatch();
@@ -13,18 +12,18 @@ const Customers = () => {
   const customers = useSelector((state) => state.customersDataBase);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [, setFilteredCustomers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const token = userInfo.token;
     const headers = { Authorization: `Bearer ${token}` };
 
-    setIsLoading(true); // Activar isLoading al comenzar la carga
+    setIsLoading(true);
 
     dispatch(getCustomersAdmin({ headers }))
-      .then(() => setIsLoading(false)) // Desactivar isLoading cuando la carga está completa
+      .then(() => setIsLoading(false))
       .catch(() => setIsLoading(false));
 
     return () => {
@@ -46,138 +45,147 @@ const Customers = () => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    // Filtra los usuarios basados en el término de búsqueda
-    const filtered = customers.filter(
-      (customer) => customer.identification.includes(term)
+    const filtered = customers.filter((customer) =>
+      customer.identification.includes(term)
     );
     setFilteredCustomers(filtered);
   };
 
   return (
-    <div className="container_tableUsers">
-      <div className="search-container">
-        <FaSearch className="icon_search_1" />
-        <Form.Group controlId="searchTerm" className="mb-2">
-          <Form.Control
-            type="text"
-            placeholder="Buscar por identificación cliente"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="search-input"
-          />
-        </Form.Group>
+    <div className="container mx-auto p-4">
+      <div className="flex items-center mb-4">
+        <FaSearch className="text-gray-500 mr-2" />
+        <input
+          type="text"
+          placeholder="Identificación cliente"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="border rounded px-2 py-1"
+        />
         <FaRedoAlt
-          variant="secondary"
-          onClick={() => setSearchTerm('')}
-          className="icon_search"
+          onClick={() => setSearchTerm("")}
+          className="text-gray-500 ml-2 cursor-pointer"
         />
       </div>
       {isLoading ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Cargando...</span>
-        </Spinner>
+        <div className="flex justify-center items-center">
+          <svg
+            className="animate-spin h-5 w-5 text-gray-500"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8z"
+            ></path>
+          </svg>
+        </div>
       ) : (
-        <Table responsive className="table table-hover table-striped">
-          <thead className="thead-dark">
-            <tr>
-              <th># IDENTIFICACION</th>
-              <th>STATUS CLIENTE</th>
-              <th>NOMBRES</th>
-              <th>APELLIDOS</th>
-              <th>RAZON SOCIAL</th>
-              <th>TIPO DE PERSONA</th>
-              <th>DIRECCION</th>
-              <th>CODIGO CIUDAD</th>
-              <th>CODIGO DEPARTAMENTO</th>
-              <th>TELEFONO</th>
-              <th>ID VENDEDOR ASIGNADO</th>
-              <th>ID COBRADOR ASIGNADO</th>
-              <th>ACCIONES</th>
-            </tr>
-          </thead>
-          <tbody>
-            {searchTerm === ''
-              ? // Si el término de búsqueda está vacío, renderizar todos los usuarios
-                customers.map((customer, index) => {
-                  const customerStatus = customer.active ? 'activo' : 'inactivo';
-                  const personType = customer.person_type === "Person" ? "Persona" : "Compañia"              
-                
-                  return (
-                    <tr key={index}>
-                      <td>{customer.identification}</td>
-                      <td>{customerStatus}</td>
-                      <td>{customer.first_name}</td>
-                      <td>{customer.last_name}</td>
-                      <td>{customer.nameCompany}</td>
-                      <td>{personType}</td>
-                      <td>{customer.address}</td>
-                      <td>{customer.city_code}</td>
-                      <td>{customer.state_code}</td>
-                      <th>{customer.number}</th>
-                      <td>{customer.seller_id}</td>
-                      <td>{customer.collector_id}</td>
-                      <td>
-                        <FaEdit
-                          onClick={() => handleEdit(customer)}
-                          className="icon_edit"
-                          title="Modificar info"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })
-              : // Si hay un término de búsqueda, renderizar los usuarios filtrados
-                filteredCustomers.map((customer, index) => {
-                  const customerStatus = customer.active ? 'activo' : 'inactivo';
-                  const personType = customer.person_type === "Person" ? "Persona" : "Compañia"
-                  
-                  return (
-                    <tr key={index}>
-                    <td>{customer.identification}</td>
-                    <td>{customerStatus}</td>
-                    <td>{customer.first_name}</td>
-                    <td>{customer.last_name}</td>
-                    <td>{customer.nameCompany}</td>
-                    <td>{personType}</td>
-                    <td>{customer.address}</td>
-                    <td>{customer.city_code}</td>
-                    <td>{customer.state_code}</td>
-                    <th>{customer.number}</th>
-                    <td>{customer.seller_id}</td>
-                    <td>{customer.collector_id}</td>
-                    <td>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-full bg-botonVerde border border-gray-300 text-sm">
+            <thead>
+              <thead>
+                <tr className="bg-botonVerde">
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    IDENTIFICACION
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    STATUS CLIENTE
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    NOMBRES
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    APELLIDOS
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    RAZON SOCIAL
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    TIPO DE PERSONA
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    DIRECCION
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    CODIGO CIUDAD
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    CODIGO DEPARTAMENTO
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    TELEFONO
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    ID VENDEDOR ASIGNADO
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    ID COBRADOR ASIGNADO
+                  </th>
+                  <th className="py-1 px-2 text-white border-b border-l border-gray-300">
+                    ACCIONES
+                  </th>
+                </tr>
+              </thead>
+            </thead>
+            <tbody>
+              {customers.map((customer, index) => {
+                const customerStatus = customer.active ? "activo" : "inactivo";
+                const personType =
+                  customer.person_type === "Person" ? "Persona" : "Compañia";
+
+                return (
+                  <tr key={index}>
+                    <td className="py-1 px-2 ">{customer.identification}</td>
+                    <td className="py-1 px-2">{customerStatus}</td>
+                    <td className="py-1 px-2">{customer.first_name}</td>
+                    <td className="py-1 px-2">{customer.last_name}</td>
+                    <td className="py-1 px-2">{customer.nameCompany}</td>
+                    <td className="py-1 px-2">{personType}</td>
+                    <td className="py-1 px-2">{customer.address}</td>
+                    <td className="py-1 px-2">{customer.city_code}</td>
+                    <td className="py-1 px-2">{customer.state_code}</td>
+                    <td className="py-1 px-2">{customer.number}</td>
+                    <td className="py-1 px-2">{customer.seller_id}</td>
+                    <td className="py-1 px-2">{customer.collector_id}</td>
+                    <td className="py-1 px-2">
                       <FaEdit
                         onClick={() => handleEdit(customer)}
                         className="icon_edit"
                         title="Modificar info"
                       />
                     </td>
-                    </tr>
-                  );
-                })}
-          </tbody>
-        </Table>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       )}
-      {selectedCustomer && (
-        <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {' '}
-              <h2>
-                Editar información del usuario con ID: {selectedCustomer.identification}
-              </h2>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Hola estoy en construccion
-            {/* <EditCustomer customer={selectedCustomer} setShowModal={setShowModal} /> */}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+      {selectedCustomer && showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg">
+            <h2 className="text-xl mb-4">
+              Editar información del usuario con ID:{" "}
+              {selectedCustomer.identification}
+            </h2>
+            <p>Hola, estoy en construcción</p>
+            <button
+              className="mt-4 bg-gray-500 text-white py-2 px-4 rounded"
+              onClick={handleCloseModal}
+            >
               Cerrar
-            </Button>
-          </Modal.Footer>
-        </Modal>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
