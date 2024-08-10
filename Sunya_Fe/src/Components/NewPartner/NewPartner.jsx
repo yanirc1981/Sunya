@@ -40,7 +40,7 @@ const NewPartner = ({ setShowModalA }) => {
     setLoading(true);
     // Obtenemos la URL de la imagen de la respuesta de Cloudinary
     const response = await fetch(
-      'https://api.cloudinary.com/v1_1/dmbkoargv/image/upload',
+      'https://api.cloudinary.com/v1_1/djkq5h1et/image/upload',
       {
         method: 'POST',
         body: data,

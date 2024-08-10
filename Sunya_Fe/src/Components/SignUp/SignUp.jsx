@@ -209,66 +209,62 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup_container">
-      <h1 className="signup_tittle">CREAR CUENTA</h1>
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="validationCustomPersonType">
-            <Form.Label>Tipo persona</Form.Label>
-            <Form.Select
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-6">Crear Cuenta</h1>
+      <form className="space-y-4" noValidate validated={validated} onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Tipo persona</label>
+            <select
               required
               name="person_type"
               value={input.person_type}
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.person_type}
+              className={`border p-2 rounded ${error.person_type ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Seleccione una opción</option>
               <option value="Person">Persona</option>
               <option value="Company">Empresa</option>
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {error.person_type}
-            </Form.Control.Feedback>
-          </Form.Group>
+            </select>
+            {error.person_type && <p className="text-red-500 text-sm">{error.person_type}</p>}
+          </div>
+
           {input.person_type === 'Person' && (
             <>
-              <Form.Group as={Col} md="4" controlId="validationCustom01">
-                <Form.Label>Nombres</Form.Label>
-                <Form.Control
+              <div className="flex flex-col">
+                <label className="mb-2 font-semibold">Nombres</label>
+                <input
                   required
                   type="text"
                   name="first_name"
                   value={input.first_name}
                   placeholder="Nombres"
                   onChange={(e) => handleChange(e)}
-                  isInvalid={!!error.first_name}
+                  className={`border p-2 rounded ${error.first_name ? 'border-red-500' : 'border-gray-300'}`}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {error.first_name}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="4" controlId="validationCustom02">
-                <Form.Label>Apellidos</Form.Label>
-                <Form.Control
+                {error.first_name && <p className="text-red-500 text-sm">{error.first_name}</p>}
+              </div>
+              <div className="flex flex-col">
+                <label className="mb-2 font-semibold">Apellidos</label>
+                <input
                   required
                   type="text"
                   name="last_name"
                   value={input.last_name}
                   placeholder="Apellidos"
                   onChange={(e) => handleChange(e)}
-                  isInvalid={!!error.last_name}
+                  className={`border p-2 rounded ${error.last_name ? 'border-red-500' : 'border-gray-300'}`}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {error.last_name}
-                </Form.Control.Feedback>
-              </Form.Group>
+                {error.last_name && <p className="text-red-500 text-sm">{error.last_name}</p>}
+              </div>
             </>
           )}
+          
           {input.person_type === 'Company' && (
             <>
-              <Form.Group as={Col} md="4" controlId="validationCustom01">
-                <Form.Label>Razon Social</Form.Label>
-                <Form.Control
+              <div className="flex flex-col">
+              <label className="mb-2 font-semibold">Razón Social</label>
+                <input
                   required
                   type="text"
                   name="nameCompany"
@@ -277,48 +273,43 @@ const SignUp = () => {
                   onChange={(e) => handleChange(e)}
                   isInvalid={!!error.nameCompany}
                 />
-                <Form.Control.Feedback type="invalid">
-                  {error.nameCompany}
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="4" controlId="validationCustom02">
-                <Form.Label>Nombre comercial</Form.Label> (opcional)
-                <Form.Control
+               {error.nameCompany && <p className="text-red-500 text-sm">{error.nameCompany}</p>}
+              </div>
+              <div className="flex flex-col">
+                <label>Nombre comercial</label> (opcional)
+                <input
                   type="text"
                   name="commercialName"
                   value={input.commercialName}
                   placeholder="Nombre comercial"
                   onChange={(e) => handleChange(e)}
                 />
-              </Form.Group>
+              </div>
             </>
           )}
-        </Row>
+        </div>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="validationCustom02">
-            <Form.Label>Número documento</Form.Label>
-            <Form.Control
+        <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Número de Documento</label>
+            <input
               required
               type="text"
               name="n_document"
               value={input.n_document}
-              placeholder="# Documento"
+              placeholder="Número de Documento"
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.n_document}
+              className={`border p-2 rounded ${error.n_document ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <Form.Control.Feedback type="invalid">
-              {error.n_document}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustomIdType">
-            <Form.Label>Tipo documento</Form.Label>
-            <Form.Select
+            {error.n_document && <p className="text-red-500 text-sm">{error.n_document}</p>}
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Tipo de Documento</label>
+            <select
               required
               name="idType"
               value={input.idType}
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.idType}
+              className={`border p-2 rounded ${error.idType ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Seleccione una opción</option>
               <option value="13">Cedula</option>
@@ -338,62 +329,54 @@ const SignUp = () => {
               </option>
               <option value="21">Tarjeta de extranjería</option>
               <option value="12">Tarjeta de identidad</option>
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {error.idType}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustomEmail">
-            <Form.Label>Correo electrónico</Form.Label>
-            <Form.Control
+            </select>
+            {error.idType && <p className="text-red-500 text-sm">{error.idType}</p>}
+          </div>
+
+          <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Correo Electrónico</label>
+            <input
               required
-              type="text"
+              type="email"
               name="email"
               value={input.email}
-              placeholder="name@example.com"
+              placeholder="Correo Electrónico"
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.email}
+              className={`border p-2 rounded ${error.email ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <Form.Control.Feedback type="invalid">
-              {error.email}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
+            {error.email && <p className="text-red-500 text-sm">{error.email}</p>}
+          </div>
 
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="validationCustom03">
-            <Form.Label>Contraseña</Form.Label>
-            <Form.Control
+
+         <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Contraseña</label>
+            <input
               required
-              type="text"
+              type="password"
               name="password"
               value={input.password}
-              placeholder=""
+              placeholder="Contraseña"
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.password}
+              className={`border p-2 rounded ${error.password ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <Form.Control.Feedback type="invalid">
-              {error.password}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustomEmail">
-            <Form.Label>Teléfono</Form.Label>
-            <Form.Control
+            {error.password && <p className="text-red-500 text-sm">{error.password}</p>}
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Teléfono</label>
+            <input
               required
               type="text"
               name="phone"
               value={input.phone}
-              placeholder=""
+              placeholder="Teléfono"
               onChange={(e) => handleChange(e)}
-              isInvalid={!!error.phone}
+              className={`border p-2 rounded ${error.phone ? 'border-red-500' : 'border-gray-300'}`}
             />
-            <Form.Control.Feedback type="invalid">
-              {error.phone}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustomCityCode">
-            <Form.Label>Ciudad ó Municipio</Form.Label>
-            <Form.Select
+            {error.phone && <p className="text-red-500 text-sm">{error.phone}</p>}
+          </div>
+          <div className="flex flex-col">
+            <label className="mb-2 font-semibold">Ciudad ó Municipio</label>
+            <select
               required
               name="city_code"
               value={input.city_code}
@@ -443,16 +426,14 @@ const SignUp = () => {
               <option value="50370">Uribe - Meta</option>
               <option value="50001">Villavicencio - Meta</option>
               <option value="50711">Vistahermosa - Meta</option>
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {error.city_code}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4" controlId="validationCustomStateCode">
-            <Form.Label>Departamento</Form.Label>
-            <Form.Select
+            </select>
+            {error.city_code && <p className="text-red-500 text-sm">{error.city_code}</p>}
+            </div>
+        
+            <div className="flex flex-col">
+          
+            <label  className="mb-2 font-semibold">Departamento</label>
+            <select
               required
               name="state_code"
               value={input.state_code}
@@ -491,46 +472,60 @@ const SignUp = () => {
               <option value="76">Valle del Cauca</option>
               <option value="97">Vaupés</option>
               <option value="99">Vichada</option>
-            </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {error.state_code}
-            </Form.Control.Feedback>
-          </Form.Group>
-        </Row>
-        <Form.Group as={Row} className="mb-3">
-          {' '}
-          <label>
-            <h6>¿Ya estas registrado?</h6>
-          </label>
-          <h6 className="span_login" onClick={handleClick1}>
-            <FaLock /> Iniciar sesión
-          </h6>
-        </Form.Group>
+            </select>
+            {error.state_code && <p className="text-red-500 text-sm">{error.state_code}</p>}
+          
+        </div>
+        <div className="flex justify-between items-center col-span-2 mb-4">
+  <label className="text-center">
+    <h6 className="font-semibold">¿Ya estás registrado?</h6>
+    <h6
+      className="text-blue-500 cursor-pointer mt-2 flex items-center justify-center"
+      onClick={handleClick1}
+    >
+      <FaLock className="mr-2" /> Iniciar sesión
+    </h6>
+  </label>
+</div>
 
-        <Form.Group className="mb-3">
-          <Form.Check
-            required
-            label="Agree to terms and conditions"
-            feedback="You must agree before submitting."
-            feedbackType="invalid"
-          />
-        </Form.Group>
-        <Button type="submit" className="signup_button">
-          Crear cuenta
-        </Button>
-        {submissionResult === 'success' && (
-          <div className="message-container">
-            <div className="success">El registro fue exitoso!.</div>
-          </div>
-        )}
-        {submissionResult === 'error' && (
-          <div className="message-container">
-            <div className="error">
-              El registro NO fue exitoso. Inténtelo nuevamente.
-            </div>
-          </div>
-        )}
-      </Form>
+<div className="flex justify-center mt-4">
+  <label className="inline-flex items-center">
+    <input
+      type="checkbox"
+      required
+      className="form-checkbox h-5 w-5 text-blue-600"
+    />
+    <span className="ml-2 text-sm text-gray-600">
+      Agree to terms and conditions
+    </span>
+  </label>
+</div>
+
+<div className="flex justify-center mt-4">
+  <button
+    type="submit"
+    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+  >
+    Crear cuenta
+  </button>
+</div>
+
+{submissionResult === 'success' && (
+  <div className="flex justify-center mt-4">
+    <div className="bg-green-100 text-green-800 p-4 rounded">
+      El registro fue exitoso!.
+    </div>
+  </div>
+)}
+
+{submissionResult === 'error' && (
+  <div className="flex justify-center mt-4">
+    <div className="bg-red-100 text-red-800 p-4 rounded">
+      El registro NO fue exitoso. Inténtelo nuevamente.
+    </div>
+  </div>
+)}
+      </form>
     </div>
   );
 };
