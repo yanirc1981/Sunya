@@ -89,7 +89,7 @@ const CreateInvoice = () => {
   };
 
   const handleChange = (e) => {
-    // Si la función se llama desde otros inputs
+
     const { name, value } = e.target;
     if (!name) {
       setInput((prevInput) => ({
@@ -356,6 +356,7 @@ const CreateInvoice = () => {
       dispatch(cleanPaymentsTypeSiigo());
     };
   }, [dispatch]);
+  
   return (
     <div>
       <Link

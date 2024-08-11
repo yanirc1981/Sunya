@@ -6,18 +6,7 @@ import {
   
 } from 'react-icons/fa';
 
-import {
-  FcConferenceCall,
-  FcShipped,
-  FcCurrencyExchange,
-  FcDocument,
-  FcShop,
-  FcTodoList,
-  FcDebt,
-  FcList,
-  FcViewDetails,
-  FcBusinessman,
-} from 'react-icons/fc';
+
 
 export const clientLinks = [
   {
@@ -38,26 +27,18 @@ export const clientLinks = [
 ];
 
 export const adminLinks = [
-  { path: '/admin/users', icon: <FcConferenceCall />, text: 'Usuarios' },
-  { path: '/admin/customers', icon: <FcBusinessman />, text: 'Clientes' },
-  { path: '/admin/products', icon: <FcViewDetails />, text: 'Productos' },
-  { path: '/admin/partners', icon: <FcShop />, text: 'Tiendas aliadas' },
-  { path: '/admin/orders', icon: <FcList />, text: 'Pedidos' },
-  { path: '/admin/deliverys', icon: <FcShipped />, text: 'Despachos' },
-  { path: '/admin/pays', icon: <FcCurrencyExchange />, text: 'Caja' },
-  {
-    path: '/admin/stockStores',
-    icon: <FcTodoList />,
-    text: 'Asignación stock tiendas',
-  },
-  {
-    path: '/admin/casherStore',
-    icon: <FcDebt />,
-    text: 'Asignación cajero tienda',
-  },
-  { path: '/admin/invoice', icon: <FcDocument />, text: 'Generar factura' },
-  { path: '/admin/invoice_type', icon: <FcDocument />, text: 'Tipos de facturas creadas en SIIGO' },
-  { path: '/admin/invoices_list', icon: <FcDocument />, text: 'Listar facturas generadas en SIIGO' },
+  { path: '/admin/users', text: 'USUARIOS' },
+  { path: '/admin/customers',  text: 'CLIENTES' },
+  { path: '/admin/products',  text: 'PRODUCTOS' },
+ 
+  { path: '/admin/orders',  text: 'PEDIDOS' },
+  { path: '/admin/deliverys',  text: 'ENVIOS' },
+  { path: '/admin/pays',  text: 'CAJA' },
+
+  
+  { path: '/admin/invoice', text: 'FACTURAR' },
+  { path: '/admin/invoice_type', text: 'CONSULTAR TIPOS DE FACTURAS' },
+  { path: '/admin/invoices_list', text: 'CONSULTAR FACTURAS SIIGO' },
 ];
 
 export const adminLinks2 = [

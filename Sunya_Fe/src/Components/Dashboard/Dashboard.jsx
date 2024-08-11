@@ -26,7 +26,7 @@ export const Dashboard = () => {
   }, [dispatch, userInfo]);
 
   return (
-    <div className="main-content flex flex-col gap-3">
+    <div className="main-content flex flex-col gap-6">
       <Nft name={name} newOrders={newOrders} />
       <Actives />
     </div>

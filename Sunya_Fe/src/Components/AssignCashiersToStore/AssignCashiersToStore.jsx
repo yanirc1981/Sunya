@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { useHistory } from 'react-router-dom';
 import {
   cleanInfoStores,
   cleanUsersAdmin,
@@ -7,13 +9,10 @@ import {
   getUsersAdmin,
   postAssignCasherStore,
 } from '../../Redux/Actions/actions';
-import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import { useHistory } from 'react-router-dom';
 
 const AssignCashiersToStore = () => {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
   const userInfo = useSelector((state) => state.userInfo);
   const token = userInfo.token;
   const headers = { Authorization: `Bearer ${token}` };
@@ -23,8 +22,6 @@ const AssignCashiersToStore = () => {
   const [selectedCashiers, setSelectedCashiers] = useState([]);
 
   useEffect(() => {
-    const token = userInfo.token;
-    const headers = { Authorization: `Bearer ${token}` };
     const fetchStoresAndCashiers = async () => {
       await dispatch(getStores());
       await dispatch(getUsersAdmin({ headers }));
@@ -44,7 +41,6 @@ const AssignCashiersToStore = () => {
       userIds: selectedCashiers,
     };
 
-    console.log(data);
     try {
       const response = await dispatch(postAssignCasherStore({ headers, data }));
       if (response.success) {
@@ -55,12 +51,12 @@ const AssignCashiersToStore = () => {
         });
         setSelectedStore('');
         setSelectedCashiers([]);
-        history.push("/admin/dashboard")
+        history.push("/admin/dashboard");
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Hubo un error al procesar tu solicitud. Cajero ya esta asignado a esa tienda.',
+          text: 'Hubo un error al procesar tu solicitud. Cajero ya está asignado a esa tienda.',
         });
       }
     } catch (error) {
@@ -87,54 +83,60 @@ const AssignCashiersToStore = () => {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col md={12}>
-          <Card>
-            <Card.Header>Asignar Cajeros a Tienda</Card.Header>
-            <Card.Body>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formStore">
-                  <Form.Label>Tienda</Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={selectedStore}
-                    onChange={(e) => setSelectedStore(e.target.value)}
-                    required
-                  >
-                    <option value="">Seleccionar Tienda</option>
-                    {stores.map((store) => (
-                      <option key={store.id} value={store.id}>
-                        {store.name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="formCashiers" className="mt-3">
-                  <Form.Label>Cajeros</Form.Label>
-                  {users
-                    .filter((user) => user.id_role === 2 && user.active)
-                    .map((user) => (
-                      <Form.Check
-                        key={user.id}
-                        type="checkbox"
-                        label={`${user.first_name} ${user.last_name}`}
-                        value={user.n_document}
-                        onChange={handleCashierChange}
-                        checked={selectedCashiers.includes(user.id)}
-                      />
-                    ))}
-                </Form.Group>
-                <Button variant="primary" type="submit" className="mt-3">
-                  Asignar Cajeros
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white shadow-md rounded-lg p-6">
+        <h2 className="text-xl font-semibold mb-4">Asignar Cajeros a Tienda</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label htmlFor="store" className="block text-sm font-medium text-gray-700 mb-2">Tienda</label>
+            <select
+              id="store"
+              value={selectedStore}
+              onChange={(e) => setSelectedStore(e.target.value)}
+              required
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            >
+              <option value="">Seleccionar Tienda</option>
+              {stores.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Cajeros</label>
+            <div className="space-y-2">
+              {users
+                .filter((user) => user.id_role === 2 && user.active)
+                .map((user) => (
+                  <div key={user.id} className="flex items-center">
+                    <input
+                      id={`cashier-${user.id}`}
+                      type="checkbox"
+                      value={user.id}
+                      onChange={handleCashierChange}
+                      checked={selectedCashiers.includes(user.id)}
+                      className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    />
+                    <label htmlFor={`cashier-${user.id}`} className="ml-2 text-sm font-medium text-gray-700">
+                      {`${user.first_name} ${user.last_name}`}
+                    </label>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Asignar Cajeros
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
 export default AssignCashiersToStore;
+
