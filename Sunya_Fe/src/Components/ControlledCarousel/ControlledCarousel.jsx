@@ -3,7 +3,7 @@ import CarrouselImagePrincipal from './CarrouselImagePrincipal';
 
 function ControlledCarousel() {
   return (
-    <div className="video-container">
+    <div >
      <CarrouselImagePrincipal/>
     </div>
   );

@@ -11,6 +11,6 @@ conn.sync({ force: true }).then(async () => {
   await helpers.chargeRol();
   await helpers.chargeUsers();
   await helpers.chargeProduct();
-  await helpers.chargeStore();
-  await helpers.chargePartner();
+  //await helpers.chargeStore();
+  //await helpers.chargePartner();
 });

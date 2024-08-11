@@ -50,8 +50,7 @@ import {
   CLEAN_CUSTOMERS_ADMIN,
 } from './actions-types';
 
-//const BASE_URL = 'https://lacteos7maravillas.onrender.com';
-//const BASE_URL = 'https://lacteos7maravillas-back.vercel.app';
+
 const BASE_URL = 'http://localhost:3001';
 
 export const createUser = (input) => async (dispatch) => {

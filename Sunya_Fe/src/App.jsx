@@ -27,7 +27,6 @@ import PlaceOrderStore from './Components/PlaceOrderStore/PlaceOrderStore';
 import OrderStore from './Components/OrderStore/OrderStore';
 import AssignStock from './Components/AssignStock/AssignStock';
 import AssignCashiersToStore from './Components/AssignCashiersToStore/AssignCashiersToStore';
-import TiendaOnLineIcon from './Components/TiendaOnLineIcon/TiendaOnLineIcon';
 import SocialMediaBanner from './Components/SocialMediaBanner/SocialMediaBanner';
 //import UpLoadImage from './Components/UpLoadImage/UpLoadImage';
 import Store from './Components/Store/Store';
@@ -65,7 +64,7 @@ function App() {
 
   const HomeRoute = () => (
     <MainContainer>
-      <ControlledCarousel />
+      {/* <ControlledCarousel /> */}
       <HomeProducts/>
       {/* <Cards /> */}
       {/* <CompanyHistory /> */}
