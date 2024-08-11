@@ -55,9 +55,9 @@ function Header() {
             <NavLink to="/carousel_products" className="py-4 px-2 text-gray-500 hover:text-blue-500">
               PRODUCTOS
             </NavLink>
-            <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+            {/* <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-blue-500">
               ALIADOS
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/company" className="py-4 px-2 text-gray-500 hover:text-blue-500">
               EMPRESA
             </NavLink>

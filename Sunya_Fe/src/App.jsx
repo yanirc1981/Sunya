@@ -66,13 +66,14 @@ function App() {
   const HomeRoute = () => (
     <MainContainer>
       <ControlledCarousel />
-      <Cards />
-      <CompanyHistory />
-      <CompanyMissionVision />
-      <SocialMediaBanner />
-      <Store />
+      <HomeProducts/>
+      {/* <Cards /> */}
+      {/* <CompanyHistory /> */}
+      {/* <CompanyMissionVision /> */}
+      {/* <SocialMediaBanner /> */}
+      {/* <Store /> */}
       {/* <UpLoadImage /> */}
-      <TiendaOnLineIcon />
+      {/* <TiendaOnLineIcon /> */}
       <WhatsAppIcon />
     </MainContainer>
   );
