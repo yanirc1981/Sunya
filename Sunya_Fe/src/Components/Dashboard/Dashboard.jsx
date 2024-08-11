@@ -1,10 +1,10 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Actives from '../Actives/Actives';
+//import Actives from '../Actives/Actives';
 import Nft from '../Nft/Nft';
 import { cleanUsersOrders, getOrdersUsers } from '../../Redux/Actions/actions';
-import './dashboard.css';
+
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ export const Dashboard = () => {
   return (
     <div className="main-content flex flex-col gap-6">
       <Nft name={name} newOrders={newOrders} />
-      <Actives />
+      
     </div>
   );
 };

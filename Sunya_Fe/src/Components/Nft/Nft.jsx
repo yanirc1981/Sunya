@@ -5,7 +5,7 @@ import { adminLinks } from '../../Links/Links';
 
 const Nft = (props) => {
   // eslint-disable-next-line react/prop-types
-  const { name, newOrders } = props;
+  const {  newOrders } = props;
   const history = useHistory()
 
   const handleClick = () => {
@@ -13,12 +13,12 @@ const Nft = (props) => {
   };
 
   return (
-    <div className="w-full rounded-lg p-8">
-      <div className="flex flex-col gap-4 justify-between">
-        <div>
-          <h5 className="text-black text-xl font-semibold">HOLA {name}</h5>
-          <h5 className="text-black text-lg font-semibold cursor-pointer" onClick={handleClick}>
-            Pedidos nuevos <strong className="font-bold">{newOrders}</strong>
+    <div className="w-full rounded-lg ">
+      <div className="flex flex-col gap-4 justify-between pb-12">
+        <div className="pb-12 pt-12">
+          
+          <h5 className="text-gray-600 text-lg font-semibold cursor-pointer" onClick={handleClick}>
+           Ordenes Creadas <strong className="font-bold">{newOrders}</strong>
           </h5>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -26,7 +26,7 @@ const Nft = (props) => {
             <Link
               key={index}
               to={link.path}
-              className="bg-botonVerde text-white text-xl rounded-lg flex items-center justify-center text-center p-4 m-2 hover:bg-orange-500 transition-all border border-gray-900"
+              className="bg-botonVerde text-white text-xl rounded-lg flex items-center justify-center text-center p-4 ml-1 hover:bg-orange-500 transition-all border border-gray-900"
             >
               <div className="flex items-center">
                 <p className="text-xl">{link.icon}</p>

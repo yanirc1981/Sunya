@@ -24,17 +24,16 @@ const CreateCustomerInvoice = ({
   handleAddContact,
 }) => {
   return (
-    <>
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label htmlFor="person_type" className="form-label font-bold mr-3">
+    <div className="p-5 bg-white rounded-lg shadow-md">
+      <div className="w-full md:w-1/2 mb-5">
+        <label htmlFor="person_type" className="form-label font-bold mb-1 block">
           Tipo de persona
         </label>
         <select
           name="person_type"
           value={input.person_type}
           onChange={handleChange}
-          className="form-select form-select-sm border-gray-300 rounded"
-          aria-label="Small select example"
+          className="form-select form-select-sm border-gray-300 rounded w-full"
           required
         >
           <option value="">Selecciona una opción</option>
@@ -46,16 +45,15 @@ const CreateCustomerInvoice = ({
         </select>
       </div>
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label htmlFor="id_type" className="form-label font-bold mr-3">
+      <div className="w-full md:w-1/2 mb-5">
+        <label htmlFor="id_type" className="form-label font-bold mb-1 block">
           Tipo de documento
         </label>
         <select
           name="id_type"
           value={input.id_type}
           onChange={handleChange}
-          className="form-select form-select-sm border-gray-300 rounded"
-          aria-label="Small select example"
+          className="form-select form-select-sm border-gray-300 rounded w-full"
           required
         >
           <option value="">Selecciona una opción</option>
@@ -67,8 +65,8 @@ const CreateCustomerInvoice = ({
         </select>
       </div>
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label className="form-label font-bold mr-3">
+      <div className="w-full md:w-1/2 mb-5">
+        <label className="form-label font-bold mb-1 block">
           Identificación
         </label>
         <input
@@ -82,16 +80,15 @@ const CreateCustomerInvoice = ({
       </div>
 
       {input.id_type === '31' && (
-        <div className="w-full md:w-1/2 mb-5 flex items-center">
-          <label htmlFor="check_digit" className="form-label font-bold mr-3">
+        <div className="w-full md:w-1/2 mb-5">
+          <label htmlFor="check_digit" className="form-label font-bold mb-1 block">
             Digito de verificación
           </label>
           <select
             name="check_digit"
             value={input.check_digit}
             onChange={handleChange}
-            className="form-select form-select-sm border-gray-300 rounded"
-            aria-label="Small select example"
+            className="form-select form-select-sm border-gray-300 rounded w-full"
           >
             <option value="">Selecciona una opción</option>
             {check_digitOptions.map((digit) => (
@@ -105,8 +102,8 @@ const CreateCustomerInvoice = ({
 
       {input.person_type === 'Company' && (
         <>
-          <div className="w-full md:w-1/2 mb-5 flex items-center">
-            <label className="form-label font-bold mr-3">
+          <div className="w-full md:w-1/2 mb-5">
+            <label className="form-label font-bold mb-1 block">
               Razon Social
             </label>
             <input
@@ -118,8 +115,8 @@ const CreateCustomerInvoice = ({
               required
             />
           </div>
-          <div className="w-full md:w-1/2 mb-5 flex items-center">
-            <label className="form-label font-bold mr-3">
+          <div className="w-full md:w-1/2 mb-5">
+            <label className="form-label font-bold mb-1 block">
               Nombre Comercial
             </label>
             <input
@@ -135,8 +132,8 @@ const CreateCustomerInvoice = ({
 
       {input.person_type === 'Person' && (
         <>
-          <div className="w-full md:w-1/2 mb-5 flex items-center">
-            <label className="form-label font-bold mr-3">
+          <div className="w-full md:w-1/2 mb-5">
+            <label className="form-label font-bold mb-1 block">
               Nombre
             </label>
             <input
@@ -148,8 +145,8 @@ const CreateCustomerInvoice = ({
               required
             />
           </div>
-          <div className="w-full md:w-1/2 mb-5 flex items-center">
-            <label className="form-label font-bold mr-3">
+          <div className="w-full md:w-1/2 mb-5">
+            <label className="form-label font-bold mb-1 block">
               Apellido
             </label>
             <input
@@ -164,8 +161,8 @@ const CreateCustomerInvoice = ({
         </>
       )}
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label className="form-label font-bold mr-3">
+      <div className="w-full md:w-1/2 mb-5">
+        <label className="form-label font-bold mb-1 block">
           Dirección 
         </label>
         <input
@@ -178,29 +175,28 @@ const CreateCustomerInvoice = ({
         />
       </div>
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-  <label className="form-label font-bold mr-3">
-    País
-  </label>
-  <input
-    type="text"
-    name="country_code"
-    value="Colombia"
-    readOnly
-    className="form-input form-input-sm border-gray-300 rounded"
-  />
-</div>
+      <div className="w-full md:w-1/2 mb-5">
+        <label className="form-label font-bold mb-1 block">
+          País
+        </label>
+        <input
+          type="text"
+          name="country_code"
+          value="Colombia"
+          readOnly
+          className="form-input form-input-sm border-gray-300 rounded w-full"
+        />
+      </div>
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label className="form-label font-bold mr-3">
+      <div className="w-full md:w-1/2 mb-5">
+        <label className="form-label font-bold mb-1 block">
           Departamento
         </label>
         <select
           name="state_code"
           value={input.state_code}
           onChange={handleChange}
-          className="form-select form-select-sm border-gray-300 rounded"
-          aria-label="Small select example"
+          className="form-select form-select-sm border-gray-300 rounded w-full"
           required
         >
           <option value="">Selecciona una opción</option>
@@ -212,16 +208,15 @@ const CreateCustomerInvoice = ({
         </select>
       </div>
 
-      <div className="w-full md:w-1/2 mb-5 flex items-center">
-        <label className="form-label font-bold mr-3">
+      <div className="w-full md:w-1/2 mb-5">
+        <label className="form-label font-bold mb-1 block">
           Ciudad
         </label>
         <select
           name="city_code"
           value={input.city_code}
           onChange={handleChange}
-          className="form-select form-select-sm border-gray-300 rounded"
-          aria-label="Small select example"
+          className="form-select form-select-sm border-gray-300 rounded w-full"
           required
         >
           <option value="">Selecciona una opción</option>
@@ -232,9 +227,10 @@ const CreateCustomerInvoice = ({
           ))}
         </select>
       </div>
-    </>
+    </div>
   );
 };
 
 export default CreateCustomerInvoice;
+
 

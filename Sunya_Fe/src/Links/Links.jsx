@@ -38,7 +38,7 @@ export const adminLinks = [
   
   { path: '/admin/invoice', text: 'FACTURAR' },
   { path: '/admin/invoice_type', text: 'CONSULTAR TIPOS DE FACTURAS' },
-  { path: '/admin/invoices_list', text: 'CONSULTAR FACTURAS SIIGO' },
+
 ];
 
 export const adminLinks2 = [
