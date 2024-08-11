@@ -10,7 +10,7 @@ import { MdAddCircle } from 'react-icons/md';
 import ToggleButton from '../ToggleButton';
 import EditProduct from '../EditProduct/EditProduct';
 import NewProduct from '../NewProduct/NewProduct';
-import './productlist.css';
+
 
 export default function ProductList() {
   const history = useHistory();

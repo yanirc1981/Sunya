@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import Col from 'react-bootstrap/esm/Col';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/esm/Row';
 import { Link, useHistory } from 'react-router-dom';
-import MessageBox from "../MessageBox";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   cleanCartItems,
@@ -15,9 +9,7 @@ import {
   postAddToCart,
   removeProductToCart,
 } from '../../Redux/Actions/actions';
-import { FaCirclePlus, FaCircleMinus } from "react-icons/fa6";
-import { PiTrashDuotone } from "react-icons/pi";
-import "./cart.css";
+import { SlTrash, SlMinus, SlPlus } from "react-icons/sl";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -116,167 +108,87 @@ export default function Cart() {
   };
 
   return (
-    <div className='cart-container'>
-      <h2>Carrito de compras</h2>
-      <Row>
-        <Col md={8}>
+    <div className="container mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-8 text-center text-green-600">PRODUCTOS SELECCIONADOS</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="md:col-span-2">
           {cartItems.length === 0 ? (
-            <MessageBox>
-              Carrito está vacío.{' '}
-              <Link to="/products">Ir tienda en línea</Link>
-            </MessageBox>
+            <div className="bg-gray-100 p-4 rounded-lg text-center">
+              Carrito está vacío. <Link to="/products" className="text-blue-500">Ir tienda en línea</Link>
+            </div>
           ) : (
             <>
-              <ListGroup>
-                <MessageBox>
-                  Continuar comprando
-                  <Link to="/products"> Ir tienda en línea</Link>
-                </MessageBox>
+              <ul className="divide-y divide-gray-200">
+                <li className="bg-gray-100 p-4 rounded-lg text-center">
+                  Continuar comprando <Link to="/products" className="text-blue-500"> Ir tienda en línea</Link>
+                </li>
                 {cartItems.map((item) => (
-                  <ListGroup.Item key={item.id_product}>
-                    <Row className="align-items-center">
-                      <Col md={4}>
+                  <li key={item.id_product} className="py-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-1/3">
                         <img
                           src={item.Product.image}
                           alt={item.Product.name}
-                          className="cart-img img-fluid rounded img-thumbnail"
-                        />{' '}
-                        <Link to={`/product/${item.id_product}`}>
-                          {item.Product.name}
-                        </Link>
-                      </Col>
-                      <Col md={1}>
-                        <Button
-                          variant="light"
+                          className="w-20 h-20 object-cover rounded-lg"
+                        />
+                        <Link to={`/product/${item.id_product}`} className="text-blue-500">{item.Product.name}</Link>
+                      </div>
+                      <div className="flex space-x-2 items-center">
+                        <button
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
                           onClick={() => updateCartHandlerRemove(item.id_product)}
                           disabled={item.quantity === 1}
                         >
-                          <FaCircleMinus />
-                        </Button>
-                      </Col>
-                      <Col md={1}>
-                        <p className='cart-span'>{item.quantity}</p>
-                      </Col>
-                      <Col md={1}>
-                        <Button
-                          variant="light"
+                          <SlMinus />
+                        </button>
+                        <span className="cart-span">{item.quantity}</span>
+                        <button
+                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700"
                           onClick={() => updateCartHandler(item.id_product, 1)}
                           disabled={item.Product.countInStock === 0}
                         >
-                          <FaCirclePlus />
-                        </Button>
-                      </Col>
-                      <Col md={3}>${item.Product.price}</Col>
-                      <Col md={2}>
-                        <Button
+                          <SlPlus />
+                        </button>
+                      </div>
+                      <div className="ml-4">
+                        <button
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded"
                           onClick={() => removeItemHandler(item.id_product)}
-                          variant="light"
                         >
-                          <PiTrashDuotone />
-                        </Button>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+                          <SlTrash />
+                        </button>
+                      </div>
+                    </div>
+                  </li>
                 ))}
-              </ListGroup>
-              <Button className="cart-button" variant="primary" onClick={handleAddProducts}>
-                Agregar más productos
-              </Button>
+              </ul>
             </>
           )}
-        </Col>
-
-        <Col md={4}>
-          <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <h3>
-                    Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
-                    {cartItems.reduce((a, c) => a + c.Product.price * c.quantity, 0)}
-                  </h3>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <div className="d-grid">
-                    <Button
-                      type="button"
-                      variant="primary"
-                      onClick={checkoutHandler}
-                      disabled={cartItems.length === 0}
-                    >
-                      Continuar con el proceso de pago
-                    </Button>
-                  </div>
-                </ListGroup.Item>
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Sidebar for adding products */}
-      {showSidebar && (
-        <div className="cart-sidebar">
-          <div className="cart-sidebar-content">
-            <Button variant="primary" onClick={handleSidebarClose}>
-              Cerrar
-            </Button>
-            <h3>Agregar productos al carrito</h3>
-            <ListGroup>
-              {products.map((product) => (
-                <ListGroup.Item key={product.id}>
-                  <Row className="align-items-center">
-                    <Col md={1}>
-                      <input
-                        type="checkbox"
-                        className="cart-input-checkbox"
-                        checked={selectedProducts[product.id] !== undefined}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedProducts(prev => ({
-                              ...prev,
-                              [product.id]: 1
-                            }));
-                          } else {
-                            const newSelectedProducts = { ...selectedProducts };
-                            delete newSelectedProducts[product.id];
-                            setSelectedProducts(newSelectedProducts);
-                          }
-                        }}
-                      />
-                    </Col>
-                    <Col md={4}>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="cart-img img-fluid rounded img-thumbnail"
-                      />{' '}
-                      {product.name}
-                    </Col>
-                    <Col md={3}>
-                      <input
-                        type="number"
-                        className="cart-input-number"
-                        min="0"
-                        value={selectedProducts[product.id] || ''}
-                        onChange={(e) => handleProductChange(product.id, parseInt(e.target.value))}
-                      />
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-            <Button
-              className="cart-button"
-              variant="primary"
-              onClick={handleAddSelectedProducts}
-            >
-              Agregar productos seleccionados
-            </Button>
-          </div>
         </div>
-      )}
+        <div className="md:col-span-1 bg-white p-4 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">Resumen</h2>
+          <ul className="divide-y divide-gray-200 mb-4">
+            {cartItems.map((item) => (
+             <li key={item.id_product} className="py-2 flex justify-between">
+             <span>{item.Product.name}</span>
+             <span>{item.quantity} x ${Number(item.Product.price).toFixed(2)}</span>
+           </li>
+           
+            ))}
+          </ul>
+          <div className="flex justify-between mb-4">
+            <span className="font-bold">Total:</span>
+            <span className="font-bold">${cartItems.reduce((acc, item) => acc + item.quantity * item.Product.price, 0).toFixed(2)}</span>
+          </div>
+          <button
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={checkoutHandler}
+            disabled={cartItems.length === 0}
+          >
+            Continuar con el proceso de pago
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
