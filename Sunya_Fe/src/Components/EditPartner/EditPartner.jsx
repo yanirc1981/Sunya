@@ -37,7 +37,7 @@ const EditPartner = ({ partner, setShowModal }) => {
 
     const data = new FormData();
     data.append('file', files[0]);
-    data.append('upload_preset', 'ozbamt8e');
+    data.append('upload_preset', 'Sunya7754');
     setLoading(true);
     // Obtenemos la URL de la imagen de la respuesta de Cloudinary
     const response = await fetch(
