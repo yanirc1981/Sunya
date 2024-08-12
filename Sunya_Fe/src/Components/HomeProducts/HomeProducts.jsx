@@ -5,6 +5,7 @@ import Product from '../Product/Product';
 import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
 import { FaHandHoldingUsd, FaWhatsapp, FaPercentage,FaFacebookF,FaInstagram } from 'react-icons/fa';
+import { HomeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 
 
 import { BsCart3, BsHouse } from 'react-icons/bs';
@@ -75,29 +76,27 @@ export default function HomeProducts() {
           </Carousel.Item>
         ))}
       </Carousel>
-      <h2 className="text-center my-4 h2_tittleStore">
-        <strong>NUESTROS</strong> PRODUCTOS
+      <h2 className="text-center text-3xl font-bold text-yellow-600 my-8 tracking-widest">
+        NUESTROS PRODUCTOS
       </h2>
-      <p className="text-center mb-4 p_Store">
+      <p className="text-center mb-8 text-lg text-gray-700">
         Encuentra lo que necesitas en nuestra selección de productos
       </p>
-      <div className="div_store_icons">
+      <div className="flex justify-center items-center space-x-4 mb-16">
         <NavLink to="/">
-          <BsHouse className="icon_cart_store" />
+          <HomeIcon className="h-8 w-8 text-yellow-600 hover:text-yellow-800 transition duration-300" />
         </NavLink>
         <NavLink to="/cart">
-          <BsCart3 className="icon_cart_store" />
-        </NavLink>{' '}
+          <ShoppingCartIcon className="h-8 w-8 text-yellow-600 hover:text-yellow-800 transition duration-300" />
+        </NavLink>
         {cartItems?.length > 0 && (
-          <h6 className="cart_item_message">
-            {' '}
+          <span className="text-sm font-bold text-red-600 bg-yellow-200 px-2 py-1 rounded-full">
             {cartItems.reduce((a, c) => a + c.quantity, 0)}
-            {''}
-          </h6>
-        )}{' '}
+          </span>
+        )}
       </div>
 
-      <Row className="justify-content-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -105,21 +104,17 @@ export default function HomeProducts() {
         ) : (
           <>
             {products.map((product) => (
-              <Col
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                className="mb-4 d-flex"
+              <div
                 key={product.id}
+                className="bg-white shadow-lg rounded-lg p-4 flex flex-col"
               >
-                <Product product={product}></Product>
-              </Col>
+                <Product product={product} />
+              </div>
             ))}
           </>
         )}
-      </Row>
-      <Container className="container_icons">
+      </div>
+      <Container className="container_icons mt-40">
         {' '}
         <Row className="justify-content-center">
           <Col xs={12} sm={6} lg={4} className="d-flex">
@@ -150,7 +145,7 @@ export default function HomeProducts() {
                 <FaWhatsapp style={{ fontSize: '2rem', color: '#25D366' }} />
               </div>
               <div className="f-content">
-                <h6>Atención al cliente</h6>
+                <h6 >Atención al cliente</h6>
                 <p>Tienes dudas?, contactanos. Click whatsapp</p>
                 <a 
                   href="https://wa.me/1234567890" 

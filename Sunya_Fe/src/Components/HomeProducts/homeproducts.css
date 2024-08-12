@@ -69,10 +69,9 @@
 }
 
 .f-content h6 {
-  font-size: 20px;
-  
-  
-  font-weight: 900;
+  font-size: 16px;
+  color: rgb(100, 100, 35);
+  font-weight: 800;
   text-transform: uppercase;
 }
 

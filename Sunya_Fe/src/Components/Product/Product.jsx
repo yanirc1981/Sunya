@@ -80,12 +80,14 @@ function Product(props) {
   return (
     <div className="border-0 shadow-lg rounded-md overflow-hidden bg-white">
       <Link to={`/product/${product.id}`}>
-        <div className="w-full h-64 overflow-hidden">
+      <div key={product.id_product} className="group relative max-w-xs border rounded-lg overflow-hidden shadow-md">
+        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover"
+             className="h-full w-full object-cover object-center"
           />
+        </div>
         </div>
       </Link>
       <div className="p-4 text-center">
