@@ -18,7 +18,7 @@ module.exports = async () => {
       name: 'Laveros',
       slug: 'Llaveros ',
       category: 'Artesania',
-      image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461970/WhatsApp_Image_2024-07-05_at_22.21.41_vo3eyt.jpg',
+      image: 'https://res.cloudinary.com/djkq5h1et/image/upload/c_pad,b_gen_fill,w_720,h_1280/v1723461970/WhatsApp_Image_2024-07-05_at_22.21.41_vo3eyt.jpg',
       price: 12000,
       countInStock: 20,
       brand: 'Sunya Artesanías',
@@ -44,8 +44,7 @@ module.exports = async () => {
       price: 12000,
       countInStock: 14,
       brand: 'Sunya Artesanías',
-      code: "L7M-2107",
-      id_taxes: 1270,
+      code: "Item-04",
       description: 'Aromas que enamoran',
     },
     {
@@ -62,7 +61,7 @@ module.exports = async () => {
     {
       name: 'Bolsos Tejidos',
       slug: 'Bolsos grandes',
-      category: 'Artesanía',
+      category: 'Artesania',
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461924/WhatsApp_Image_2024-07-05_at_22.21.40_2_mdt8hr.jpg',
       price: 5000,
       countInStock: 25,

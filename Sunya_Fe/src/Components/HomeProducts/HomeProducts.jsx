@@ -6,12 +6,9 @@ import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
 import { FaHandHoldingUsd, FaWhatsapp, FaPercentage,FaFacebookF,FaInstagram } from 'react-icons/fa';
 import { HomeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
-
-
-import { BsCart3, BsHouse } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import { logoA, Wompy, MediosPago } from '../Image/Image';
-import logo from '../../assets/img/logoSunya.png'
+
 
 import './homeproducts.css';
 import {
