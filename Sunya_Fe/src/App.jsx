@@ -30,7 +30,7 @@ import AssignCashiersToStore from './Components/AssignCashiersToStore/AssignCash
 import SocialMediaBanner from './Components/SocialMediaBanner/SocialMediaBanner';
 //import UpLoadImage from './Components/UpLoadImage/UpLoadImage';
 import Store from './Components/Store/Store';
-import CompanyMissionVision from './Components/CompanyMissionVision/CompanyMissionVision';
+//import CompanyMissionVision from './Components/CompanyMissionVision/CompanyMissionVision';
 import CompanyHistory from './Components/CompanyHistory/CompanyHistory';
 import TableDeliverys from './Components/TableDeliverys/TableDeliverys';
 import TablePays from './Components/TablePays/TablePays';
