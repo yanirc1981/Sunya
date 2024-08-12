@@ -42,7 +42,7 @@
   border-radius: 40px;
   color: #ffffff;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   z-index: 5; /* Asegura que el contenido esté por encima de la capa de video */
 }
 
@@ -51,7 +51,7 @@
   color: #ffffff;
   text-align: center;
   line-height: 40px;
-  font-size:30px;
+  font-size:20px;
   font-family: Helvetica, Helvetica Neue, Arial, sans-serif;
 }
 

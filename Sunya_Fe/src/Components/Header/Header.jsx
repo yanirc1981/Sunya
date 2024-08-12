@@ -51,17 +51,17 @@ function Header() {
               <img src={logo} alt="Company Logo" className="h-full w-full object-contain" />
             </Link>
           </div>
-          <div className="hidden md:flex items-center space-x-3">
-            <NavLink to="/carousel_products" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+          <div className="hidden md:flex items-center space-x-6 ">
+            <NavLink to="/carousel_products" className="py-3 px-2 text-gray-700  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
               PRODUCTOS
             </NavLink>
-            {/* <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+            {/* <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-green-500">
               ALIADOS
             </NavLink> */}
-            <NavLink to="/company" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+            <NavLink to="/company" className="py-3 px-2 text-gray-500  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
               EMPRESA
             </NavLink>
-            <NavLink to="/social" className="py-4 px-2 text-gray-500 hover:text-blue-500">
+            <NavLink to="/social" className="py-3 px-2 text-gray-500  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
               NOTICIAS
             </NavLink>
 

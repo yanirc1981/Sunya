@@ -104,7 +104,7 @@ export default function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mb-48">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="flex justify-center">
           <img

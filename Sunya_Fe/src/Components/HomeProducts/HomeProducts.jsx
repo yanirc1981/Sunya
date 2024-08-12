@@ -162,10 +162,9 @@ export default function HomeProducts() {
                   <FaWhatsapp style={{ 
                       fontSize: '4rem', 
                       color: '#25D366', 
-                      marginTop: '10px',
                       display: 'block', 
                       margin: '0 auto' , 
-                      marginTop:'10%'
+                      marginTop:'12%'
                     }}  />
                 </a>
               </div>
