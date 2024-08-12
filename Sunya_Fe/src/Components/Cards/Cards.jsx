@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ImageComponent from '../ImageComponent/ImageComponent';
-import ImageComponentA from '../ImageComponent/ImageComponentA';
-import ImageComponentB from '../ImageComponent/ImageComponentB';
-import ImageComponentC from '../ImageComponent/ImageComponentC';
+
 
 function Cards() {
   const [index, setIndex] = useState(0);

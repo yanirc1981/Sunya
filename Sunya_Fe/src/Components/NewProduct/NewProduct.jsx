@@ -1,51 +1,54 @@
-import { useState } from 'react';
-import { Card, Form, Button, Row, Image } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { FaEdit } from 'react-icons/fa';
-import Swal from 'sweetalert2';
+import { useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   cleanProductsAdmin,
   getProductsAdmin,
   postNewProduct,
-} from '../../Redux/Actions/actions';
-import { logoA } from '../Image/Image';
-import { useEffect } from 'react';
+} from "../../Redux/Actions/actions";
+
+import { useEffect } from "react";
 import {
   cleanAccountGroup,
   cleanTaxes,
   createProductSiigo,
   getAccountGroup,
   getTaxes,
-} from '../../Redux/ActionsSiigo/actionsSiigo';
+} from "../../Redux/ActionsSiigo/actionsSiigo";
 
+// eslint-disable-next-line react/prop-types
 const NewProduct = ({ setShowModalA }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const userInfo = useSelector((state) => state.userInfo);
   const accounts = useSelector((state) => state.accounts);
-  const taxes = useSelector((state) => state.taxes);
+  //const taxes = useSelector((state) => state.taxes);
+
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [code, setCode] = useState('');
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [image, setImage] = useState('');
-  const [brand, setBrand] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [account, setAccount] = useState('');
+  const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [images, setImages] = useState([]);
+  const [brand, setBrand] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [countInStock, setCountInStock] = useState("");
+  const [account, setAccount] = useState("");
   const [idTax, setIdTax] = useState(0);
-  const [type, setType] = useState('');
-  const [currencyCode, setCurrencyCode] = useState('');
-  const [position, setPosition] = useState('');
-  const [unid, setUnid] = useState('');
+  const [type, setType] = useState("");
+  const [currencyCode, setCurrencyCode] = useState("");
+  const [position, setPosition] = useState("");
+  const [unid, setUnid] = useState("");
   const [stockControl, setStockControl] = useState(false);
-  const [taxClassification, setTaxClassification] = useState('');
+  const [taxClassification, setTaxClassification] = useState("");
   const [taxIncluded, setTaxIncluded] = useState(false);
   const [taxConsumptionValue, setTaxConsumptionValue] = useState(0);
-  const [tariff, setTariff] = useState('');
+  const [tariff, setTariff] = useState("");
+  const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
 
   useEffect(() => {
     const generateCode = () => {
@@ -65,27 +68,50 @@ const NewProduct = ({ setShowModalA }) => {
     };
   }, [dispatch, userInfo]);
 
+  const handleAddColor = (color) => {
+    setColors([...colors, color]);
+  };
+
+  const handleAddSize = (size) => {
+    setSizes([...sizes, size]);
+  };
+
+  const handleRemoveColor = (color) => {
+    setColors(colors.filter((c) => c !== color));
+  };
+
+  const handleRemoveSize = (size) => {
+    setSizes(sizes.filter((s) => s !== size));
+  };
+
   const upLoadImage = async (e) => {
-    const files = e.target.files;
-
-    const data = new FormData();
-    data.append('file', files[0]);
-    data.append('upload_preset', 'ozbamt8e');
+    const files = Array.from(e.target.files);
     setLoading(true);
-    // Obtenemos la URL de la imagen de la respuesta de Cloudinary
-    const response = await fetch(
-      'https://api.cloudinary.com/v1_1/djkq5h1et/image/upload',
-      {
-        method: 'POST',
-        body: data,
-      }
-    );
-    const file = await response.json();
-    const imageURL = file.secure_url;
 
-    setImage(imageURL);
+    const uploadPromises = files.map(async (file) => {
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "ozbamt8e");
 
-    setLoading(false);
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/djkq5h1et/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const fileData = await response.json();
+      return fileData.secure_url;
+    });
+
+    try {
+      const uploadedImages = await Promise.all(uploadPromises);
+      setImages((prevImages) => [...prevImages, ...uploadedImages]);
+    } catch (error) {
+      console.error("Error uploading images:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDateProduct = async () => {
@@ -95,11 +121,11 @@ const NewProduct = ({ setShowModalA }) => {
       code: code,
       name: name,
       slug: slug,
-      image: image,
+      images: images,
       brand: brand,
       account: account,
       description: description,
-      price: parseFloat(price).toFixed(2),
+      price: parseFloat(price).toFixed(3),
       countInStock: parseFloat(countInStock),
       currencyCode: currencyCode,
       position: position,
@@ -120,354 +146,492 @@ const NewProduct = ({ setShowModalA }) => {
         const response = await dispatch(postNewProduct(headers, data));
         if (response.success) {
           Swal.fire({
-            icon: 'success',
-            title: '¡Éxito!',
-            text: '¡Producto creado correctamente. Enlazado con SIIGO!.',
+            icon: "success",
+            title: "¡Éxito!",
+            text: "¡Producto creado correctamente. Ya está en SIIGO!.",
           });
           dispatch(cleanProductsAdmin());
           setEditMode(false);
           setShowModalA(false);
-          history.push('/admin/products');
+          history.push("/admin/products");
         }
       } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'La creacion del producto NO fue exitosa, verifique parametros intente nuevamente',
+          icon: "error",
+          title: "Error",
+          text: "Completa los campos requeridos para cargar el producto",
         });
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   };
 
   return (
-    <Card className="w-85 mx-auto">
-      <Card.Body>
-        <Card.Title>Informacion nuevo producto</Card.Title>
+    <div className="w-11/12 max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="p-6">
         {!editMode ? (
-          <>
-            {/* Mostrar detalles del perfil */}
-            <Card.Text>
-              <Image src={logoA} thumbnail className="image_edit" />
-            </Card.Text>
-
-            <Button variant="primary" onClick={() => setEditMode(true)}>
-              <FaEdit /> Crear Producto
-            </Button>
-          </>
+          <button
+            onClick={() => setEditMode(true)}
+            className="bg-botonVerde text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Crear Producto
+          </button>
         ) : (
-          <Form>
-            <Row>
-              {/* Columna 1: Campos de texto */}
-              <Form.Group>
-                <Form.Label>
-                  <strong>Imagen *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="file"
-                  name="file"
-                  onChange={upLoadImage}
-                  placeholder="Sube tu imagen aquí"
-                  required
-                />
-                {loading ? (
-                  <p>Cargando imagen...</p>
-                ) : (
-                  <Image src={image} thumbnail className="image_edit" />
-                )}
-              </Form.Group>
-              <Form.Group controlId="formName">
-                <Form.Label>
-                  <strong>Codigo</strong>
-                </Form.Label>
-                <Form.Control type="text" value={code} readOnly />
-              </Form.Group>
+          <form className="space-y-4">
+            <div>
+              <label className="block text-lg font-semibold mb-2">
+                Imagenes del producto
+                <span className="text-red-500 ml-1">*</span>
+              </label>
+              <input
+                type="file"
+                name="files"
+                onChange={upLoadImage}
+                multiple
+                className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2 mb-4"
+                required
+              />
+              {loading && <p className="text-blue-500">Cargando imagen...</p>}
+              <div className="flex flex-wrap gap-4">
+                {images.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Uploaded ${index}`}
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="block text-lg font-semibold mb-2">Codigo</label>
+              <input
+                type="text"
+                value={code}
+                readOnly
+                className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg p-2"
+              />
+            </div>
 
-              <Form.Group controlId="formAccount">
-                <Form.Label>
-                  <strong>Grupo Inventario SIIGO *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={account}
-                  onChange={(e) => setAccount(e.target.value)}
-                  className="form-control-lg"
-                  required
-                >
-                  <option value="">Selecciona una cuenta</option>
-                  {accounts.map((acc) => (
-                    <option key={acc.id} value={acc.id}>
-                      {acc.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
+            {/* Aquí empiezan los nuevos campos */}
+            <div className="mb-4">
+              <label
+                htmlFor="formAccount"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Grupo Inventario SIIGO</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <select
+                id="formAccount"
+                value={account}
+                onChange={(e) => setAccount(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una cuenta</option>
+                {/* Asegúrate de tener la variable `accounts` definida */}
+                {accounts.map((acc) => (
+                  <option key={acc.id} value={acc.id}>
+                    {acc.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <Form.Group controlId="formType">
-                <Form.Label>
-                  <strong>Tipo del producto</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="Product">Producto</option>
-                  <option value="Service">Servicio</option>
-                  <option value="ConsumerGood">Consumo</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-4">
+              <label
+                htmlFor="formType"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Tipo de producto</strong>{" "}
+              </label>
+              <select
+                id="formType"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="Product">Producto</option>
+                <option value="Service">Servicio</option>
+                <option value="ConsumerGood">Consumo</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formName">
-                <Form.Label>
-                  <strong>Nombre *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese nombre nuevo producto"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </Form.Group>
+            <div className="mb-4">
+              <label
+                htmlFor="formName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Nombre</strong>{" "}
+              </label>
+              <input
+                id="formName"
+                type="text"
+                placeholder="Ingrese nombre nuevo producto"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="formSlug"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Presentacion</strong>{" "}
+              </label>
+              <input
+                id="formSlug"
+                type="text"
+                placeholder="Ingrese nueva presentacion"
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formSlug">
-                <Form.Label>
-                  <strong>Presentacion *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese nueva presentacion"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
-                  required
-                />
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formUnid"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Medida</strong>{" "}
+                <span className="text-gray-500">(opcional)</span>
+              </label>
+              <select
+                id="formUnid"
+                value={unid}
+                onChange={(e) => setUnid(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="94">Unidad</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formUnid">
-                <Form.Label>
-                  <strong>Medida</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={unid}
-                  onChange={(e) => setUnid(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="94">Unidad</option>
-                  <option value="13">Ración</option>
-                  <option value="23">gramo por centímetro cúbico</option>
-                  <option value="25">gramo por centímetro cuadrado</option>
-                  <option value="26">tonelada real</option>
-                  <option value="28">kilogramo por metro cuadrado</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formBrand"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Marca</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formBrand"
+                type="text"
+                placeholder="Ingrese marca nuevo producto"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formBrand">
-                <Form.Label>
-                  <strong>Marca *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese marca nuevo producto"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                  required
-                />
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formDescription"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Descripción </strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formDescription"
+                type="text"
+                placeholder="Ingrese descripción"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formDescription">
-                <Form.Label>
-                  <strong>Descripción * </strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese descripción nuevo producto"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formPrice"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Precio sin IVA</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formPrice"
+                type="text"
+                placeholder="Ingrese precio nuevo producto sin IVA"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formPrice">
-                <Form.Label>
-                  <strong>Precio sin IVA *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese precio nuevo producto sin IVA"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formCurrencyCode"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Moneda</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <select
+                id="formCurrencyCode"
+                value={currencyCode}
+                onChange={(e) => setCurrencyCode(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una moneda</option>
+                <option value="COP">COP</option>
+                <option value="USD">USD</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formCurrencyCode">
-                <Form.Label>
-                  <strong>Tipo de Moneda</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={currencyCode}
-                  onChange={(e) => setCurrencyCode(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="COP">COP - Pesos Colombianos</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formTaxClassification"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Clasificación de IVA</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <select
+                id="formTaxClassification"
+                value={taxClassification}
+                onChange={(e) => setTaxClassification(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="SIVA">IVA</option>
+                <option value="SIV">IVA Exento</option>
+                <option value="SIVA_N">IVA No Aplica</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formPosition">
-                <Form.Label>
-                  <strong>Clasificación tributaria</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={taxClassification}
-                  onChange={(e) => setTaxClassification(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="Taxed">Gravado</option>
-                  <option value="Exempt">Exento</option>
-                  <option value="Excluded">Excluido</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formTaxIncluded"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>IVA incluido</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <select
+                id="formTaxIncluded"
+                value={taxIncluded}
+                onChange={(e) => setTaxIncluded(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formPosition">
-                <Form.Label>
-                  <strong>IVA incluido</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={taxIncluded}
-                  onChange={(e) => setTaxIncluded(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="true">SI</option>
-                  <option value="false">NO</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formTaxConsumptionValue"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Consumo del IVA</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formTaxConsumptionValue"
+                type="text"
+                placeholder="Ingrese el valor de IVA de consumo"
+                value={taxConsumptionValue}
+                onChange={(e) => setTaxConsumptionValue(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formTaxConsumptionValue">
-                <Form.Label>
-                  <strong>Valor impuesto al consumo</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  type="number"
-                  value={taxConsumptionValue}
-                  onChange={(e) => setTaxConsumptionValue(e.target.value)}
-                  
-                />
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formIdTax"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>ID Impuesto</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formIdTax"
+                type="text"
+                placeholder="Ingrese el ID del impuesto"
+                value={idTax}
+                onChange={(e) => setIdTax(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formIdTax">
-                <Form.Label>
-                  <strong>Impuesto *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={idTax}
-                  onChange={(e) => setIdTax(e.target.value)}
-                  className="form-control-lg"
-                  required
-                >
-                  <option value="">Selecciona una opción</option>
-                  {taxes.map((acc) => (
-                    <option key={acc.id} value={acc.id}>
-                      {acc.name}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formPosition"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Posición</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formPosition"
+                type="text"
+                placeholder="Ingrese la posición"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
 
-              <Form.Group controlId="formPosition">
-                <Form.Label>
-                  <strong>Identificador lista de precios *</strong> <span className="required-field">(campo obligatorio)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={position}
-                  onChange={(e) => setPosition(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </Form.Control>
-              </Form.Group>
-              <Form.Group controlId="formStockControl">
-                <Form.Label>
-                  <strong>Control Inventario</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="select"
-                  value={stockControl}
-                  onChange={(e) => setStockControl(e.target.value)}
-                  className="form-control-lg"
-                  
-                >
-                  <option value="">Selecciona una opción</option>
-                  <option value="true">SI</option>
-                  <option value="false">NO</option>
-                </Form.Control>
-              </Form.Group>
+            <div className="mb-6">
+              <label
+                htmlFor="formStockControl"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Control de Stock</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <select
+                id="formStockControl"
+                value={stockControl}
+                onChange={(e) => setStockControl(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required
+              >
+                <option value="">Selecciona una opción</option>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+              </select>
+            </div>
 
-              <Form.Group controlId="formCountInStock">
-                <Form.Label>
-                  <strong>Cantidad stock</strong>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Ingrese cantidad stock nuevo producto"
-                  value={countInStock}
-                  onChange={(e) => setCountInStock(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="formCountInStock">
-                <Form.Label>
-                  <strong>Código arancelario</strong> <span className="required-fieldA">(opcional)</span>
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={tariff}
-                  onChange={(e) => setTariff(e.target.value)}
-                 
-                />
-              </Form.Group>
-            </Row>
-            {/* Botones de acción */}
-            <Button
-              variant="success"
+            <div className="mb-6">
+              <label
+                htmlFor="formCountInStock"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Cantidad en Stock</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formCountInStock"
+                type="number"
+                placeholder="Ingrese cantidad en stock"
+                value={countInStock}
+                onChange={(e) => setCountInStock(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="formTariff"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Tarifa</strong>{" "}
+                <span className="text-red-500">(campo obligatorio)</span>
+              </label>
+              <input
+                id="formTariff"
+                type="text"
+                placeholder="Ingrese tarifa del producto"
+                value={tariff}
+                onChange={(e) => setTariff(e.target.value)}
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="formColors"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Colores</strong>
+              </label>
+              <input
+                id="formColors"
+                type="text"
+                placeholder="Ingrese color"
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddColor(e.target.value);
+                    e.target.value = "";
+                  }
+                }}
+              />
+              <ul className="mt-2">
+                {colors.map((color, index) => (
+                  <li key={index} className="flex items-center justify-between">
+                    {color}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveColor(color)}
+                      className="text-red-500 ml-2"
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="formSizes"
+                className="block text-sm font-medium text-gray-700"
+              >
+                <strong>Talles</strong>
+              </label>
+              <input
+                id="formSizes"
+                type="text"
+                placeholder="Ingrese talle"
+                className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddSize(e.target.value);
+                    e.target.value = "";
+                  }
+                }}
+              />
+              <ul className="mt-2">
+                {sizes.map((size, index) => (
+                  <li key={index} className="flex items-center justify-between">
+                    {size}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveSize(size)}
+                      className="text-red-500 ml-2"
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <button
+              type="button"
               onClick={handleDateProduct}
-              className="button_edit"
+              className="bg-botonVerde text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Guardar Cambios
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => setEditMode(false)}
-              className="button_edit"
-            >
-              Cancelar
-            </Button>
-          </Form>
+              Guardar
+            </button>
+          </form>
         )}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 

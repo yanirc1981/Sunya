@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ControlledCarousel from './Components/ControlledCarousel/ControlledCarousel';
+//import ControlledCarousel from './Components/ControlledCarousel/ControlledCarousel';
 import Header from './Components/Header/Header';
 import Cards from './Components/Cards/Cards';
 import Footer from './Components/Footer/Footer';

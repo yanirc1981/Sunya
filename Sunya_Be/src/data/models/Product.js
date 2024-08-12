@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
       type: {
         type: DataTypes.STRING
       },
-      stock_control : {
+      stock_control: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
       },
@@ -40,13 +40,13 @@ module.exports = (sequelize) => {
       tax_consumption_value: {
         type: DataTypes.FLOAT
       },
-      id_taxes : {
+      id_taxes: {
         type: DataTypes.FLOAT
       },
       currency_code: {
         type: DataTypes.STRING
       },
-      price_list_position	: {
+      price_list_position: {
         type: DataTypes.FLOAT
       },
       unit: {
@@ -55,9 +55,10 @@ module.exports = (sequelize) => {
       tariff: {
         type: DataTypes.STRING
       },
-      image: {
-        type: DataTypes.STRING,
+      images: {
+        type: DataTypes.JSON, // Usar JSON para almacenar un array de URLs de imágenes
         allowNull: true,
+        defaultValue: [], // Establece un valor por defecto vacío
       },
       brand: {
         type: DataTypes.STRING,
@@ -105,3 +106,4 @@ module.exports = (sequelize) => {
     }
   );
 };
+

@@ -155,61 +155,62 @@ export default function ProductList() {
         </div>
       )}
 
-      {/* Modal for editing product */}
-      {selectedProduct && showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-xl font-semibold">Editar información del producto</h2>
-              <button
-                onClick={handleCloseModal}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✖
-              </button>
-            </div>
-            <div className="mt-4">
-              <EditProduct product={selectedProduct} setShowModal={setShowModal} />
-            </div>
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={handleCloseModal}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+{/* Modal for editing product */}
+{selectedProduct && showModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-[48rem] max-h-[90vh] flex flex-col">
+      <div className="flex justify-between items-center border-b pb-2">
+        <h2 className="text-xl font-semibold">Editar información del producto</h2>
+        <button
+          onClick={handleCloseModal}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          ✖
+        </button>
+      </div>
+      <div className="mt-4 overflow-y-auto flex-grow">
+        <EditProduct product={selectedProduct} setShowModal={setShowModal} />
+      </div>
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={handleCloseModal}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
-      {/* Modal for creating new product */}
-      {showModalA && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-xl font-semibold">Formulario nuevo producto</h2>
-              <button
-                onClick={handleCloseModalA}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✖
-              </button>
-            </div>
-            <div className="mt-4">
-              <NewProduct setShowModalA={setShowModalA} />
-            </div>
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={handleCloseModalA}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+{/* Modal for creating new product */}
+{showModalA && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-[48rem] max-h-[90vh] flex flex-col">
+      <div className="flex justify-between items-center border-b pb-2">
+        <h2 className="text-xl font-semibold">Nuevo producto</h2>
+        <button
+          onClick={handleCloseModalA}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          ✖
+        </button>
+      </div>
+      <div className="mt-4 overflow-y-auto flex-grow">
+        <NewProduct setShowModalA={setShowModalA} />
+      </div>
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={handleCloseModalA}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
