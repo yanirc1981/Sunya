@@ -103,7 +103,7 @@ function Product(props) {
           </button>
         ) : (
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300"
+            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300"
             onClick={userInfo.token ? () => addToCartHandler(product.id) : null}
           >
             {userInfo.token ? (

@@ -9,18 +9,18 @@ function Cards() {
   const images = [
     {
       component: <ImageComponent text="First slide" />,
-      title: "LÁCTEOS",
-      subtitle: "Yogurt, Kumis, Avena",
+      title: "SUNYA",
+      subtitle: "La Casa Del Arte Sano",
     },
     {
       component: <ImageComponent text="Third slide" />,
-      title: "QUESOS",
-      subtitle: "Frescos y Maduros",
+      title: "SUNYA",
+      subtitle: "La Casa Del Arte Sano",
     },
     {
       component: <ImageComponent text="Fourth slide" />,
-      title: "POSTRES",
-      subtitle: "Frescos y Deliciosos",
+      title: "SUNYA",
+      subtitle: "La Casa Del Arte Sano",
     },
   ];
 

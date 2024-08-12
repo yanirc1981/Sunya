@@ -4,10 +4,14 @@ import { Carousel, Container, Row, Col } from 'react-bootstrap';
 import Product from '../Product/Product';
 import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
-import { FaHandHoldingUsd, FaHeadset, FaPercentage } from 'react-icons/fa';
+import { FaHandHoldingUsd, FaWhatsapp, FaPercentage,FaFacebookF,FaInstagram } from 'react-icons/fa';
+
+
 import { BsCart3, BsHouse } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import { logoA, Wompy, MediosPago } from '../Image/Image';
+import logo from '../../assets/img/logoSunya.png'
+
 import './homeproducts.css';
 import {
   getProducts,
@@ -143,11 +147,27 @@ export default function HomeProducts() {
           <Col xs={12} sm={6} lg={4} className="d-flex">
             <div className="inner-sin-feature">
               <div className="icon d-inline-block">
-                <FaHeadset />
+                <FaWhatsapp style={{ fontSize: '2rem', color: '#25D366' }} />
               </div>
               <div className="f-content">
                 <h6>Atención al cliente</h6>
                 <p>Tienes dudas?, contactanos. Click whatsapp</p>
+                <a 
+                  href="https://wa.me/1234567890" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="whatsapp-link"
+
+                >
+                  <FaWhatsapp style={{ 
+                      fontSize: '4rem', 
+                      color: '#25D366', 
+                      marginTop: '10px',
+                      display: 'block', 
+                      margin: '0 auto' , 
+                      marginTop:'10%'
+                    }}  />
+                </a>
               </div>
             </div>
           </Col>
@@ -158,7 +178,36 @@ export default function HomeProducts() {
               </div>
               <div className="f-content">
                 <h6>Ofertas y promociones</h6>
-                <p>Siguenos en redes y encuentra ofertas.</p>
+                <p>Síguenos en redes y encuentra ofertas.</p>
+                <div className="social-icons" style={{display:'flex', gap:'20', marginLeft:'40%', marginTop:'10%'}}>
+                  <a 
+                    href="https://www.instagram.com/sunyagaleriadelartesano/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="instagram-link"
+                  >
+                    <FaInstagram 
+                      style={{ 
+                        fontSize: '4rem', 
+                        color: '#E4405F', // Color original de Instagram
+                        marginRight: '10px'
+                      }}  
+                    />
+                  </a>
+                  <a 
+                    href="https://www.facebook.com/sunyagaleriadelartesano" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="facebook-link"
+                  >
+                    <FaFacebookF 
+                      style={{ 
+                        fontSize: '4rem', 
+                        color: '#1877F2', // Color original de Facebook
+                      }}  
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </Col>

@@ -132,7 +132,7 @@ function App() {
             component={() => (
               <MainContainer>
                 <CompanyHistory />
-                <CompanyMissionVision />
+                {/* <CompanyMissionVision /> */}
                 <WhatsAppIcon />
               </MainContainer>
             )}

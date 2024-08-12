@@ -10,20 +10,20 @@ export const tienda =
   'https://res.cloudinary.com/dfos7xei4/image/upload/v1710433418/bolis/gdfxgusiughwybuux2s0.png';
 
 export const wlogo =
-  'https://res.cloudinary.com/dmbkoargv/image/upload/v1720827236/mlxm3agxorc2fyvklmyb.png';
+  'https://res.cloudinary.com/djkq5h1et/image/upload/v1723460197/logoSunya_jvfwji.jpg';
 export const flogo =
   'https://res.cloudinary.com/dmbkoargv/image/upload/v1720827188/yyeaafwwhbq3fbgfmabb.png';
 export const ilogo =
   'https://res.cloudinary.com/dmbkoargv/image/upload/v1720827106/kw6w23kkszwyrzoa5qet.png';
 export const iCards =
-  'https://res.cloudinary.com/dmbkoargv/image/upload/v1720826404/jsdzg6w9vqapdnrbgcct.jpg';
+  'https://res.cloudinary.com/djkq5h1et/image/upload/v1723460186/bannerSunya_d0ahk7.jpg';
 export const cart2 =
   'https://res.cloudinary.com/dmbkoargv/image/upload/v1720826809/ogojgwfosmlgjeqmhiyq.jpg';
 export const vacas3 =
-  'https://res.cloudinary.com/dmbkoargv/video/upload/v1720826573/qonvn1f3liv9h5gj9w4o.mp4';
+  'https://res.cloudinary.com/djkq5h1et/video/upload/v1723461564/24798-346036378_tiny_ofstub.mp4';
 export const logo =
-  'https://res.cloudinary.com/dmbkoargv/image/upload/v1720828408/osilqshunsm5jjcussiq.png';
+  'https://res.cloudinary.com/djkq5h1et/image/upload/v1723460197/logoSunya_jvfwji.jpg';
 export const logoA =
-  'https://res.cloudinary.com/dmbkoargv/image/upload/v1720828576/u9l8cwhpyh26p8w8mebw.png';
+  'https://res.cloudinary.com/djkq5h1et/image/upload/v1723460197/logoSunya_jvfwji.jpg';
 export const Wompy = "https://res.cloudinary.com/dmbkoargv/image/upload/v1722111388/vrlcxcbsiapywy9ziyrf.png"
 export const MediosPago = "https://res.cloudinary.com/dmbkoargv/image/upload/v1722111460/r4mreympdejywewlacuy.png"
