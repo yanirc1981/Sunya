@@ -1,15 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup';
-
-import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
-import LoadingBox from '../LoadingBox';
-import MessageBox from '../MessageBox';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { BsCart3 } from "react-icons/bs";
+import { FaShoppingCart } from 'react-icons/fa';
 import {
   cleanCartItems,
   cleanProduct,
@@ -17,8 +10,8 @@ import {
   getProductById,
   postAddToCart,
 } from '../../Redux/Actions/actions';
-import { BsCart3 } from "react-icons/bs";
-import { FaShoppingCart } from 'react-icons/fa';
+import LoadingBox from '../LoadingBox';
+import MessageBox from '../MessageBox';
 import './product.css';
 
 export default function ProductScreen() {
@@ -28,7 +21,7 @@ export default function ProductScreen() {
   const { id_product } = params;
   const userInfo = useSelector((state) => state.userInfo);
   
-  const cartItems = useSelector((state) => state.cartItems)
+  const cartItems = useSelector((state) => state.cartItems);
   
   const id = userInfo?.user?.id;
   const headers = useMemo(() => {
@@ -111,81 +104,61 @@ export default function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div className='div_productScreen'>
-      <Row>
-        <Col md={3}>
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="flex justify-center">
           <img
-            className="product-image"
+            className="rounded-lg shadow-md w-full max-w-xs"
             src={product.image}
             alt={product.name}
-          ></img>
-        </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <h3>{product.name}</h3>
-             
-            </ListGroup.Item>
-            <ListGroup.Item><strong>Precio : </strong> $  {formatPrice(product.price)}</ListGroup.Item>
-            <ListGroup.Item><strong>Marca : </strong> {product.brand}</ListGroup.Item>
-            <ListGroup.Item><strong>Presentacion : </strong>  {product.slug}</ListGroup.Item>
-            <ListGroup.Item>
-              <strong>Descripción :</strong>
-              <p>{product.description}</p>
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Precio:</Col>
-                    <Col>${formatPrice(product.price)}</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Estado:</Col>
-                    <Col>
-                      {product.countInStock > 0 ? (
-                        <Badge bg="success">En Stock</Badge>
-                      ) : (
-                        <Badge bg="danger">Agotado</Badge>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      <button
-                        className="button_card"
-                        onClick={
-                          userInfo.token ? () => addToCartHandler(product.id) : null
-                        }
-                      >
-                        {userInfo.token ? (
-                          <>
-                            <BsCart3  size={22} className="link_products"/> Agregar
-                            
-                          </>
-                        ) : (
-                          <Link to="/login" className="link_products">
-                            <BsCart3  size={22} /> Agregar
-                            
-                          </Link>
-                        )}
-                      </button>
-                    </div>
-                  </ListGroup.Item>
+          />
+        </div>
+        <div className="flex flex-col justify-between">
+          <div className="mb-4">
+            <h3 className="text-2xl font-semibold text-gray-800">{product.name}</h3>
+            <p className="text-lg font-bold text-green-600 mt-2">{formatPrice(product.price)}</p>
+            <p className="text-sm text-gray-600 mt-2"><strong>Marca:</strong> {product.brand}</p>
+            <p className="text-sm text-gray-600 mt-2"><strong>Presentación:</strong> {product.slug}</p>
+            <p className="text-sm text-gray-600 mt-4"><strong>Descripción:</strong> {product.description}</p>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between">
+          <div className="p-4 bg-white rounded-lg shadow-md">
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-gray-600">Precio:</span>
+                <span className="text-lg font-bold text-gray-800">{formatPrice(product.price)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Estado:</span>
+                <span>
+                  {product.countInStock > 0 ? (
+                    <span className="inline-block px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">En Stock</span>
+                  ) : (
+                    <span className="inline-block px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">Agotado</span>
+                  )}
+                </span>
+              </div>
+            </div>
+            {product.countInStock > 0 && (
+              <button
+                className="w-full flex items-center justify-center bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-200"
+                onClick={userInfo.token ? () => addToCartHandler(product.id) : null}
+              >
+                {userInfo.token ? (
+                  <>
+                    <BsCart3 size={22} className="mr-2" /> Agregar
+                  </>
+                ) : (
+                  <Link to="/login" className="flex items-center justify-center w-full">
+                    <BsCart3 size={22} className="mr-2" /> Agregar
+                  </Link>
                 )}
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

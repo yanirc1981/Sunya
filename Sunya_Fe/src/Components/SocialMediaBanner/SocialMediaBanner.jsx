@@ -2,12 +2,12 @@ import { FaFacebookF, FaInstagram, FaEnvelope } from 'react-icons/fa';
 
 const SocialMediaBanner = () => {
   return (
-    <div className="bg-gray-100 py-8 mb-40 mt-16">
-      <div className="max-w-6xl mx-auto text-center">
+    <div className="bg-gray-100 py-8 mb-40 mt-64">
+      <div className="max-w-6xl mx-auto text-center mt-32">
         <p className=" font-semibold text-gray-700 mb-4 text-4xl">
           Seguinos en nuestras redes sociales:
         </p>
-        <div className="flex justify-center space-x-8">
+        <div className="flex justify-center space-x-8 mb-4">
           <a
             href="https://www.facebook.com/sunyagaleriadelartesano"
             target="_blank"
