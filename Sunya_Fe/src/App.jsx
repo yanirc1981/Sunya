@@ -28,7 +28,7 @@ import OrderStore from './Components/OrderStore/OrderStore';
 import AssignStock from './Components/AssignStock/AssignStock';
 import AssignCashiersToStore from './Components/AssignCashiersToStore/AssignCashiersToStore';
 import SocialMediaBanner from './Components/SocialMediaBanner/SocialMediaBanner';
-//import UpLoadImage from './Components/UpLoadImage/UpLoadImage';
+import UpLoadImage from './Components/UpLoadImage/UpLoadImage';
 import Store from './Components/Store/Store';
 import CompanyMissionVision from './Components/CompanyMissionVision/CompanyMissionVision';
 import CompanyHistory from './Components/CompanyHistory/CompanyHistory';

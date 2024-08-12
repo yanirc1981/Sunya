@@ -11,7 +11,7 @@ const UpLoadImage = () => {
     console.log(files);
     const data = new FormData();
     data.append('file', files[0]);
-    data.append('upload_preset', 'ozbamt8e');
+    data.append('upload_preset', 'Sunya7754');
     setLoading(true);
     
     const isImage = files[0].type.startsWith('image/');
