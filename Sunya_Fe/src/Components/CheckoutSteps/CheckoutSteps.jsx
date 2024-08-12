@@ -1,15 +1,24 @@
+/* eslint-disable react/prop-types */
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import "./checkoutsteps.css"
+import './checkoutsteps.css';
 
 export default function CheckoutSteps(props) {
   return (
-    <Row className="checkout-steps">
-      <Col className={props.step1 ? 'active' : ''}>Login</Col>
-      <Col className={props.step2 ? 'active' : ''}>Datos</Col>
-      <Col className={props.step3 ? 'active' : ''}>Metodo pago</Col>
-      <Col className={props.step4 ? 'active' : ''}>Generar pedido</Col>
-    </Row>
+    <div className="flex gap-4 items-center mb-6 mt-4">
+      <div className={`flex-1 text-center tx-xl py-2 ${props.step1 ? 'bg-botonVerde text-white' : 'bg-gray-200 text-gray-600'}`}>
+        Login
+      </div>
+      <div className={`flex-1 text-center tx-xl py-2 ${props.step2 ? 'bg-botonVerde text-white' : 'bg-gray-200 text-gray-600'}`}>
+        Datos
+      </div>
+      <div className={`flex-1 text-center tx-xl py-2 ${props.step3 ? 'bg-botonVerde text-white' : 'bg-gray-200 text-gray-600'}`}>
+        Metodo pago
+      </div>
+      <div className={`flex-1 text-center tx-xl py-2 ${props.step4 ? 'bg-botonVerde text-white' : 'bg-gray-200 text-gray-600'}`}>
+        Generar pedido
+      </div>
+    </div>
   );
 }
+
