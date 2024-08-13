@@ -80,18 +80,12 @@ function Product(props) {
   return (
     <div className="border-0 shadow-lg rounded-md overflow-hidden bg-white">
       <Link to={`/product/${product.id}`}>
-        <div className="group relative max-w-xs border rounded-lg overflow-hidden shadow-md">
-          <div className="relative aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200">
+        <div className="group relative w-full overflow-hidden">
+          <div className="relative w-full h-60 bg-gray-200">
             <img 
               src={product.image}
               alt={product.name}
               className="object-cover w-full h-full"
-              style={{
-                    width: '100%',
-                    height: '200px', // Ajusta esta altura según tus necesidades
-                    objectFit: 'cover', 
-                    borderRadius: '0.5rem 0.5rem 0 0'
-                  }}
             />
           </div>
         </div>
