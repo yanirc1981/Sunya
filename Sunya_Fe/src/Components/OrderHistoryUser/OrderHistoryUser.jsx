@@ -55,9 +55,9 @@ export default function OrderHistoryUser() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <table className="w-full min-w-full bg-botonVerde border text-white border-gray-300 text-sm">
+        <table className="w-full min-w-full border text-gray-600 border-gray-300 text-sm">
           <thead>
-            <tr>
+            <tr className=" bg-botonVerde  text-white">
               <th className="py-2 px-4 border-b">ID PEDIDO</th>
               <th className="py-2 px-4 border-b">FECHA PEDIDO</th>
               <th className="py-2 px-4 border-b">TOTAL PEDIDO</th>

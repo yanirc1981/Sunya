@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { FaSignOutAlt,  FaHome } from 'react-icons/fa';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { cleanDetailUser } from '../../Redux/Actions/actions';
@@ -77,26 +77,26 @@ function Header() {
                     <div className="py-1">
                       {isAdmin || isSuperAdmin ? adminLinks2.map((link, index) => (
                         <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                          {link.icon} {link.text}
+                           {link.text}
                         </NavLink>
                       )) : isClient ? clientLinks.map((link, index) => (
                         <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                          {link.icon} {link.text}
+                           {link.text}
                         </NavLink>
                       )) : isCashier && cashierLinks.map((link, index) => (
                         <NavLink key={index} to={link.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                          {link.icon} {link.text}
+                           {link.text}
                         </NavLink>
                       ))}
                       <div className="border-t border-gray-100"></div>
                       <NavLink to="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <FaHome /> Inicio
+                         Inicio
                       </NavLink>
                       <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <FaSignOutAlt /> Cerrar Sesión
+                        Cerrar Sesión
                       </button>
                     </div>
                   </div>

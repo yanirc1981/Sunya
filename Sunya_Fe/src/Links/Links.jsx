@@ -45,17 +45,17 @@ export const adminLinks2 = [
   {
     path: '/admin/dashboard',
     icon: <FaRegCalendarCheck />,
-    text: 'Tablero Administrador',
+    text: 'Panel',
   },
   {
     path: '/cart',
     icon: <FaShoppingCart />,
-    text: 'Carrito de compras',
+    text: 'Carrito',
   },
   {
     path: '/orderhistory',
     icon: <FaShoppingBag />,
-    text: 'Mis pedidos',
+    text: 'Ordenes',
   },
 ];
 
@@ -73,6 +73,6 @@ export const cashierLinks = [
   {
     path: '/products',
     icon: <FaClipboardList />,
-    text: 'Productos Tienda',
+    text: 'Tienda',
   },
 ];

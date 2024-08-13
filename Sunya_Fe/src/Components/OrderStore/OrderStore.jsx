@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
@@ -15,15 +10,11 @@ import {
   putOrderPaymentResult,
 } from '../../Redux/Actions/actions';
 import { v4 as uuidv4 } from 'uuid';
-import './orderstore.css';
-import WompiWidget from '../WompiWidget/WompiWidget';
-import { Form, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import { transportOptions, departmentMap, municipios } from '../../data';
 import DatePicker from 'react-datepicker';
 
 export default function OrderStore() {
-  
   const params = useParams();
   const { id: orderId } = params;
   const history = useHistory();
@@ -34,16 +25,11 @@ export default function OrderStore() {
   const [hash, setHash] = useState('');
   const [error, setError] = useState(false);
   const order = useSelector((state) => state.order);
-  const orderAddress = 'Oficina ' + order.id;
   const userInfo = useSelector((state) => state.userInfo);
-  const headers = useMemo(() => {
-    return { Authorization: `Bearer ${userInfo.token}` };
-  }, [userInfo.token]);
-  const isAdmin = userInfo?.user?.id_role === 3;
+
   const [isPending, setIsPending] = useState(false);
   const [loadingPay, setLoadingPay] = useState(false);
   const [loadingDeliver, setLoadingDeliver] = useState(false);
-  const publicKey = import.meta.env.VITE_API_PUBLICKEY;
   const [showModal, setShowModal] = useState(false);
   const [showModalA, setShowModalA] = useState(false);
   const [checkNumber, setCheckNumber] = useState('');
@@ -52,51 +38,63 @@ export default function OrderStore() {
   const [transactionNumber, setTransactionNumber] = useState('');
   const [guideNumber, setGuideNumber] = useState('');
   const [transport, setTransport] = useState('');
+
+  const headers = useMemo(() => {
+    return userInfo.token ? { Authorization: `Bearer ${userInfo.token}` } : null;
+  }, [userInfo.token]);
+
+  const isAdmin = userInfo?.user?.id_role === 3;
+
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-
   const handleShowModalA = () => setShowModalA(true);
   const handleCloseModalA = () => setShowModalA(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const orderId = order.id;
-  
-    // Validar si la fecha de vencimiento es obligatoria
-    if ((order.paymentMethod === 'Crédito' || order.paymentMethod === 'Pagos a credito') && !expiryDate) {
+
+    // Validaciones
+    if (!orderId || !order.totalPrice || !order.paymentMethod) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor asegúrate de que todos los campos requeridos estén llenos.',
+      });
+      return;
+    }
+
+    if ((order.paymentMethod === 'Crédito' || order.paymentMethod === 'Pagos a crédito') && !expiryDate) {
       Swal.fire({
         icon: 'warning',
         title: 'Campo requerido',
         text: 'La fecha de vencimiento es obligatoria para el método de pago seleccionado.',
       });
-      return; 
+      return;
     }
-  
-    // Construir el objeto de datos para enviar
+
     const data = {
       totalPrice: order.totalPrice,
       status: 'Aprobada',
       date: new Date().toISOString(),
-      expiryDate: expiryDate ? expiryDate.toISOString() : null, // Convertir fecha a formato ISO si está presente
+      expiryDate: expiryDate ? expiryDate.toISOString() : null,
       paymentMethod: order.paymentMethod,
       checkNumber: order.paymentMethod === 'Cheque' ? checkNumber : null,
       checkBank: order.paymentMethod === 'Cheque' ? checkBank : null,
       transactionNumber: order.paymentMethod === 'Transferencia Bancaria' ? transactionNumber : null,
     };
- 
+
     try {
+      setLoadingPay(true);
       const response = await dispatch(putOrderPaymentResult({ orderId, data, headers }));
-      
+      setLoadingPay(false);
+
       if (response.success) {
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
           text: 'El pago se registró exitosamente.',
         });
-        setCheckNumber('');
-        setCheckBank('');
-        setTransactionNumber('');
-        setExpiryDate(null); // Limpiar la fecha de vencimiento
+        resetPaymentForm();
         handleCloseModal();
         history.push('/');
       } else {
@@ -115,34 +113,42 @@ export default function OrderStore() {
       });
     }
   };
-  
 
   const handleSubmitDelivery = async (e) => {
     e.preventDefault();
-    const orderId = order.id;
+
+    if (!orderId || !guideNumber || !transport) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        text: 'Por favor asegúrate de que todos los campos requeridos estén llenos.',
+      });
+      return;
+    }
+
     const data = {
       date: new Date().toISOString(),
       numberGuide: guideNumber,
       transport: transport,
       shippingPrice: order.shippingPrice,
-      shippingAddress: order.shippingAddress,
-      shippingAddressCity: municipios[order.shippingAddress.city_code],
-      shippingAddressCountry: departmentMap[order.shippingAddress.state_code],
-      shippingAddressPhone: order.shippingAddress.phone,
+      shippingAddress: order.shippingAddress?.address,
+      shippingAddressCity: municipios[order.shippingAddress?.city_code],
+      shippingAddressCountry: departmentMap[order.shippingAddress?.state_code],
+      shippingAddressPhone: order.shippingAddress?.phone,
     };
-    console.log(JSON.stringify(data, null, 2))
+
     try {
-      const response = await dispatch(
-        putOrderDelivery({ orderId, data, headers })
-      );
+      setLoadingDeliver(true);
+      const response = await dispatch(putOrderDelivery({ orderId, data, headers }));
+      setLoadingDeliver(false);
+
       if (response.success) {
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
-          text: 'Datos envio se registro exitosamente.',
+          text: 'Datos de envío registrados exitosamente.',
         });
-        setGuideNumber('');
-        setTransport('');
+        resetDeliveryForm();
         handleCloseModalA();
         history.push('/');
       } else {
@@ -162,11 +168,25 @@ export default function OrderStore() {
     }
   };
 
+  const resetPaymentForm = () => {
+    setCheckNumber('');
+    setCheckBank('');
+    setTransactionNumber('');
+    setExpiryDate(null);
+  };
+
+  const resetDeliveryForm = () => {
+    setGuideNumber('');
+    setTransport('');
+  };
+
   useEffect(() => {
-    const generatedReference = uuidv4();
-    setReference(generatedReference);
-    const cents = order.totalPrice * 100;
-    setPriceInCents(cents);
+    if (order?.totalPrice) {
+      const generatedReference = uuidv4();
+      setReference(generatedReference);
+      const cents = order.totalPrice * 100;
+      setPriceInCents(cents);
+    }
 
     return () => {
       dispatch(cleanOrder());
@@ -174,25 +194,22 @@ export default function OrderStore() {
   }, [dispatch, order]);
 
   useEffect(() => {
-    // Este efecto se ejecuta cuando cambian los valores de referencia, priceInCents, etc.
-    const moneda = 'COP';
-    const secretKey = import.meta.env.VITE_API_SECRETKEY;
+    if (reference && priceInCents) {
+      const moneda = 'COP';
+      const secretKey = import.meta.env.VITE_API_SECRETKEY;
 
-    const generateHash = async () => {
-      const totalPrice = priceInCents.toString(); // Convierte el priceInCents a string
+      const generateHash = async () => {
+        const totalPrice = priceInCents.toString();
+        const cadenaConcatenada = reference + totalPrice + moneda + secretKey;
+        const encondedText = new TextEncoder().encode(cadenaConcatenada);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', encondedText);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+        setHash(hashHex);
+      };
 
-      var cadenaConcatenada = reference + totalPrice + moneda + secretKey;
-      const encondedText = new TextEncoder().encode(cadenaConcatenada);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', encondedText);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray
-        .map((b) => b.toString(16).padStart(2, '0'))
-        .join('');
-
-      setHash(hashHex);
-    };
-
-    generateHash();
+      generateHash();
+    }
   }, [reference, priceInCents]);
 
   return loading ? (
@@ -200,333 +217,229 @@ export default function OrderStore() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div className="container_order">
+    <div className="container mx-auto">
       <h1 className="my-3">Pedido {orderId}</h1>
-      <Row>
-        <Col md={8}>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Datos cliente</Card.Title>
-              <Card.Text>
-                <strong>Nombres:</strong> {order.shippingAddress.first_name}{' '}
-                <br />
-                <strong>Apellidos:</strong> {order.shippingAddress.last_name}{' '}
-                <br />
-                <strong>Dirección:</strong> {order.shippingAddress.address}{' '}
-                <br />
-                <strong>Teléfono contacto: </strong>{' '}
-                {order.shippingAddress.phone} <br />
-                <strong>Correo electrónico: </strong>{' '}
-                {order.shippingAddress.email}
-              </Card.Text>
-              {order.isDelivered ? (
-                <MessageBox variant="success">
-                  Despachado el {order.deliveredAt}
-                </MessageBox>
-              ) : (
-                <MessageBox variant="danger">No despachado</MessageBox>
-              )}
-            </Card.Body>
-          </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2">
+          <div className="mb-3 p-4 border border-gray-300 rounded-md">
+            <h2 className="text-lg font-semibold">Datos cliente</h2>
+            <p>
+              <strong>Nombres:</strong> {order.shippingAddress?.first_name}<br />
+              <strong>Apellidos:</strong> {order.shippingAddress?.last_name}<br />
+              <strong>Dirección:</strong> {order.shippingAddress?.address}<br />
+              <strong>Teléfono contacto:</strong> {order.shippingAddress?.phone}<br />
+              <strong>Correo electrónico:</strong> {order.shippingAddress?.email}
+            </p>
+            {order.isDelivered ? (
+              <MessageBox variant="success">
+                Despachado el {order.deliveredAt}
+              </MessageBox>
+            ) : (
+              <MessageBox variant="danger">No despachado</MessageBox>
+            )}
+          </div>
 
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Pago</Card.Title>
-              <Card.Text>
-                <strong>Metodo:</strong> {order.paymentMethod}
-              </Card.Text>
-              {order.isPaid ? (
-                <MessageBox variant="success">
-                  Pagado el {order.paidAt}
-                </MessageBox>
-              ) : (
-                <MessageBox variant="danger">No pagado</MessageBox>
-              )}
-            </Card.Body>
-          </Card>
+          <div className="mb-3 p-4 border border-gray-300 rounded-md">
+            <h2 className="text-lg font-semibold">Datos de envío</h2>
+            <p>
+              <strong>Dirección:</strong> {order.shippingAddress?.address}<br />
+              <strong>Ciudad:</strong> {municipios[order.shippingAddress?.city_code]}<br />
+              <strong>Departamento:</strong> {departmentMap[order.shippingAddress?.state_code]}
+            </p>
+            <p>
+              <strong>Teléfono contacto:</strong> {order.shippingAddress?.phone}
+            </p>
+            {order.isDelivered ? (
+              <MessageBox variant="success">
+                Despachado el {order.deliveredAt}
+              </MessageBox>
+            ) : (
+              <MessageBox variant="danger">No despachado</MessageBox>
+            )}
+          </div>
 
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Items</Card.Title>
-              <ListGroup variant="flush">
-                {order.orderItems.map((item) => (
-                  <ListGroup.Item key={item.Product.id}>
-                    <Row className="align-items-center">
-                      <Col md={6}>
-                        <img
-                          src={item.Product.image}
-                          alt={item.Product.name}
-                          className="img-fluid rounded img-thumbnail"
-                        ></img>{' '}
-                        <Link to={`/product/${item.id_product}`}>
-                          {item.Product.name}
-                        </Link>
-                      </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
-                      </Col>
-                      <Col md={3}>${item.Product.price}</Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={4}>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Resumen pedido</Card.Title>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Items</Col>
-                    <Col>${order.itemsPrice.toFixed(2)}</Col>
-                  </Row>
-                </ListGroup.Item>
-                {/* <ListGroup.Item>
-                  <Row>
-                    <Col>Costo envio**</Col>
-                    <Col>${order.shippingPrice.toFixed(2)}</Col>
-                    <p className="message_order_delivery">
-                      **Pedidos <strong>mayores</strong> a{' '}
-                      <strong>$120.000.oo</strong> envio gratis
-                    </p>
-                  </Row>
-                </ListGroup.Item> */}
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Impuesto IVA 19%</Col>
-                    <Col>${order.taxPrice.toFixed(2)}</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>
-                      <strong>Total pedido</strong>
-                    </Col>
-                    <Col>
-                      <strong>${order.totalPrice.toFixed(2)}</strong>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-                {!order.isPaid &&
-                  (order.paymentMethod === 'wompi' ? (
-                    <div className="div_wompy">
-                      {isPending ? (
-                        <LoadingBox />
-                      ) : (
-                        <WompiWidget
-                          productPriceInCents={priceInCents}
-                          reference={reference}
-                          publicKey={publicKey}
-                          signature={hash}
-                          Email={order.shippingAddress.email}
-                          Phone={order.shippingAddress.phone}
-                          Address={order.shippingAddress.address}
-                          Order={orderAddress}
-                          Name={order.shippingAddress.first_name}
-                          Municipio={order.shippingAddress.city_code}
-                          Departamento={order.shippingAddress.country_code}
+          {order.isPaid ? (
+            <MessageBox variant="success">
+              Pagado el {order.paidAt}
+            </MessageBox>
+          ) : (
+            <MessageBox variant="danger">No pagado</MessageBox>
+          )}
+
+          {!order.isPaid && (
+            <button
+              type="button"
+              className="bg-botonVerde mr-2 text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600"
+              onClick={handleShowModal}
+            >
+              Registrar pago
+            </button>
+          )}
+
+          {!order.isDelivered && (
+            <button
+              type="button"
+              className="bg-botonVerde  text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600"
+              onClick={handleShowModalA}
+            >
+              Registrar envío
+            </button>
+          )}
+
+          {/* Modal de pago */}
+          {showModal && (
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+              <div className="bg-white p-6 rounded-lg">
+                <h2 className="text-lg font-semibold">Registrar Pago</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="payment-method" className="block text-sm font-medium text-gray-700">
+                      Método de pago
+                    </label>
+                    <select
+                      id="payment-method"
+                      name="paymentMethod"
+                      className="form-select"
+                      value={order.paymentMethod || ''}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    >
+                      <option value="Efectivo">Efectivo</option>
+                      <option value="Cheque">Cheque</option>
+                      <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                      <option value="Crédito">Crédito</option>
+                      <option value="Pagos a crédito">Pagos a crédito</option>
+                    </select>
+                  </div>
+                  
+                  {/* Campos condicionales */}
+                  {order.paymentMethod === 'Cheque' && (
+                    <>
+                      <div className="mb-3">
+                        <label htmlFor="check-number" className="block text-sm font-medium text-gray-700">
+                          Número de Cheque
+                        </label>
+                        <input
+                          type="text"
+                          id="check-number"
+                          className="form-input"
+                          value={checkNumber}
+                          onChange={(e) => setCheckNumber(e.target.value)}
                         />
-                      )}
-                      {loadingPay && <LoadingBox />}
-                    </div>
-                  ) : (
-                    <Button variant="primary" onClick={handleShowModal}>
-                      Pagar
-                    </Button>
-                  ))}
-                {isAdmin && order.isPaid && !order.isDelivered && (
-                  <ListGroup.Item>
-                    {loadingDeliver && <LoadingBox></LoadingBox>}
-                    <div>
-                      <Button type="button" onClick={handleShowModalA}>
-                        Enviar Pedido
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Registrar Pago</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Card>
-      <Card.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Total Pago</Form.Label>
-            <Form.Control type="text" value={order.totalPrice} readOnly />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Estado</Form.Label>
-            <Form.Control type="text" value="Aprobada" readOnly />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Fecha</Form.Label>
-            <Form.Control
-              type="text"
-              value={new Date().toISOString()}
-              readOnly
-            />
-          </Form.Group>
-          {order.paymentMethod === 'Cheque' && (
-            <>
-              <Form.Group className="mb-3">
-                <Form.Label>Número de Cheque</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={checkNumber}
-                  onChange={(e) => setCheckNumber(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Banco del Cheque</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={checkBank}
-                  onChange={(e) => setCheckBank(e.target.value)}
-                  required
-                />
-              </Form.Group>
-            </>
-          )}
-          {(order.paymentMethod === 'Transferencia' || order.paymentMethod === 'Consignacion') && (
-            <Form.Group className="mb-3">
-              <Form.Label># Transacción</Form.Label>
-              <Form.Control
-                type="text"
-                value={transactionNumber}
-                onChange={(e) => setTransactionNumber(e.target.value)}
-                required
-              />
-            </Form.Group>
-          )}
-          {(order.paymentMethod === 'Crédito' || order.paymentMethod === 'Pagos a credito') && (
-            <Form.Group className="mb-3">
-              <Form.Label>Fecha de Vencimiento</Form.Label>
-              <DatePicker
-                selected={expiryDate}
-                onChange={(date) => setExpiryDate(date)}
-                className="form-control"
-                dateFormat="yyyy/MM/dd"
-              />
-            </Form.Group>
-          )}
-          <Form.Group className="mb-3">
-            <Form.Label>Método de Pago</Form.Label>
-            <Form.Control
-              type="text"
-              value={order.paymentMethod}
-              readOnly
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Enviar
-          </Button>
-        </Form>
-      </Card.Body>
-    </Card>
-        </Modal.Body>
-      </Modal>
-      <Modal show={showModalA} onHide={handleCloseModalA}>
-        <Modal.Header closeButton>
-          <Modal.Title>Registrar Envio</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Card>
-            <Card.Body>
-              <Form onSubmit={handleSubmitDelivery}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Fecha</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={new Date().toISOString()}
-                    readOnly
-                  />
-                </Form.Group>
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="check-bank" className="block text-sm font-medium text-gray-700">
+                          Banco del Cheque
+                        </label>
+                        <input
+                          type="text"
+                          id="check-bank"
+                          className="form-input"
+                          value={checkBank}
+                          onChange={(e) => setCheckBank(e.target.value)}
+                        />
+                      </div>
+                    </>
+                  )}
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Número de Guía</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={guideNumber}
-                    onChange={(e) => setGuideNumber(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Transportadora</Form.Label>
-                  <Form.Select
-                    value={transport}
-                    onChange={(e) => setTransport(e.target.value)}
-                    required
+                  {order.paymentMethod === 'Transferencia Bancaria' && (
+                    <div className="mb-3">
+                      <label htmlFor="transaction-number" className="block text-sm font-medium text-gray-700">
+                        Número de Transacción
+                      </label>
+                      <input
+                        type="text"
+                        id="transaction-number"
+                        className="form-input"
+                        value={transactionNumber}
+                        onChange={(e) => setTransactionNumber(e.target.value)}
+                      />
+                    </div>
+                  )}
+
+                  {(order.paymentMethod === 'Crédito' || order.paymentMethod === 'Pagos a crédito') && (
+                    <div className="mb-3">
+                      <label htmlFor="expiry-date" className="block text-sm font-medium text-gray-700">
+                        Fecha de Vencimiento
+                      </label>
+                      <DatePicker
+                        selected={expiryDate}
+                        onChange={(date) => setExpiryDate(date)}
+                        dateFormat="yyyy/MM/dd"
+                        className="form-input"
+                      />
+                    </div>
+                  )}
+
+                  <button type="submit" className="bg-botonVerde mr text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600">
+                    Registrar Pago
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary ml-3"
+                    onClick={handleCloseModal}
                   >
-                    <option value="">Selecciona una transportadora</option>
-                    {transportOptions.map((option, index) => (
-                      <option key={index} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+                    Cancelar
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
 
-                {/* <Form.Group className="mb-3">
-                  <Form.Label>Valor Flete</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={order.shippingPrice.toFixed(2)}
-                    readOnly
-                  />
-                </Form.Group> */}
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Direccion Envio</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={order.shippingAddress.address}
-                    readOnly
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Municipio</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={municipios[order.shippingAddress.city_code]}
-                    readOnly
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Departamento</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={departmentMap[order.shippingAddress.state_code]}
-                    readOnly
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Teléfono Contacto</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={order.shippingAddress.phone}
-                    readOnly
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit" >
-                  Enviar
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Modal.Body>
-      </Modal>
+          {/* Modal de envío */}
+          {showModalA && (
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+              <div className="bg-white p-6 rounded-lg">
+                <h2 className="text-lg font-semibold">Registrar Envío</h2>
+                <form onSubmit={handleSubmitDelivery}>
+                  <div className="mb-3">
+                    <label htmlFor="guide-number" className="block text-sm font-medium text-gray-700">
+                      Número de Guía
+                    </label>
+                    <input
+                      type="text"
+                      id="guide-number"
+                      className="form-input"
+                      value={guideNumber}
+                      onChange={(e) => setGuideNumber(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="transport" className="block text-sm font-medium text-gray-700">
+                      Transportadora
+                    </label>
+                    <select
+                      id="transport"
+                      name="transport"
+                      className="form-select"
+                      value={transport}
+                      onChange={(e) => setTransport(e.target.value)}
+                    >
+                      {transportOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button type="submit" className="bg-botonVerde mr text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600"
+                 >
+                    Registrar Envío
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-botonVerde text-white font-bold py-2 px-6 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600"
+                    onClick={handleCloseModalA}
+                  >
+                    Cancelar
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
+
+
