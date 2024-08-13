@@ -109,6 +109,7 @@ const Login = () => {
         <form
           className="bg-white p-8 rounded shadow-md"
           noValidate
+          // eslint-disable-next-line react/no-unknown-property
           validated={validated}
           onSubmit={handleSubmit}
         >
@@ -156,19 +157,21 @@ const Login = () => {
               <input type="checkbox" className="mr-2" />
               Recordarme
             </label>
-            <h6 className="cursor-pointer text-blue-600" onClick={handleClick1}>
-              <FaUser /> Crear cuenta
-            </h6>
+           
           </div>
 
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="w-full bg-green-500 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="w-full bg-green-500 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-xl hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Ingresar
+              Ingresa
             </button>
+            
           </div>
+          <h6 className="cursor-pointer flex items-center justify-center mt-2 text-botonVerde" onClick={handleClick1}>
+               Registrate en Sunya
+            </h6>
         </form>
       </div>
     </div>

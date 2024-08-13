@@ -1,17 +1,17 @@
-import { Link, useHistory } from 'react-router-dom';
-import { BsCart3 } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+/* eslint-disable react/prop-types */
+import { Link } from "react-router-dom";
+import { BsCart3 } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
 import {
   cleanCartItems,
   getCartItems,
   postAddToCart,
-} from '../../Redux/Actions/actions';
-import { useEffect, useMemo } from 'react';
+} from "../../Redux/Actions/actions";
+import { useEffect, useMemo } from "react";
 
 function Product(props) {
   const { product } = props;
   const dispatch = useDispatch();
-  const history = useHistory();
   const userInfo = useSelector((state) => state.userInfo);
   const cartItems = useSelector((state) => state.cartItems);
   const id = userInfo?.user?.id;
@@ -27,7 +27,7 @@ function Product(props) {
     return () => {
       dispatch(cleanCartItems());
     };
-  }, [dispatch, id, headers, userInfo]);
+  }, [dispatch, id, headers, userInfo.token]);
 
   const addToCartHandler = async (productId) => {
     const existingItem = cartItems.find(
@@ -39,7 +39,7 @@ function Product(props) {
         const quantity = existingItem.quantity + 1;
         const productCart = existingItem.Product;
         if (productCart.countInStock < quantity) {
-          alert('¡Producto sin stock!');
+          alert("¡Producto sin stock!");
           return;
         }
         const response = await dispatch(
@@ -52,7 +52,7 @@ function Product(props) {
       } else {
         const quantity = 1;
         if (product.countInStock < quantity) {
-          alert('¡Producto sin stock!');
+          alert("¡Producto sin stock!");
           return;
         }
         const response = await dispatch(
@@ -64,14 +64,14 @@ function Product(props) {
         }
       }
     } catch (error) {
-      console.error('Hubo un error al agregar el producto al carrito:', error);
+      console.error("Hubo un error al agregar el producto al carrito:", error);
     }
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'COP',
+    return new Intl.NumberFormat("es-ES", {
+      style: "currency",
+      currency: "COP",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(price);
@@ -80,14 +80,20 @@ function Product(props) {
   return (
     <div className="border-0 shadow-lg rounded-md overflow-hidden bg-white">
       <Link to={`/product/${product.id}`}>
-      <div key={product.id_product} className="group relative max-w-xs border rounded-lg overflow-hidden shadow-md">
-        <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200">
-          <img
-            src={product.image}
-            alt={product.name}
-             className="h-full w-full object-cover object-center"
-          />
-        </div>
+        <div className="group relative max-w-xs border rounded-lg overflow-hidden shadow-md">
+          <div className="relative aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200">
+            <img 
+              src={product.image}
+              alt={product.name}
+              className="object-cover w-full h-full"
+              style={{
+                    width: '100%',
+                    height: '200px', // Ajusta esta altura según tus necesidades
+                    objectFit: 'cover', 
+                    borderRadius: '0.5rem 0.5rem 0 0'
+                  }}
+            />
+          </div>
         </div>
       </Link>
       <div className="p-4 text-center">
@@ -125,4 +131,3 @@ function Product(props) {
 }
 
 export default Product;
-

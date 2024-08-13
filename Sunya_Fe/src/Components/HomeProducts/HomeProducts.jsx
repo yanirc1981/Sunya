@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Carousel, Container, Row, Col } from 'react-bootstrap';
 import Product from '../Product/Product';
 import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
-import { FaHandHoldingUsd, FaWhatsapp, FaPercentage,FaFacebookF,FaInstagram } from 'react-icons/fa';
+
 import { HomeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
+
 import { NavLink } from 'react-router-dom';
 import { logoA, Wompy, MediosPago } from '../Image/Image';
+
 
 
 import './homeproducts.css';
@@ -17,6 +18,11 @@ import {
   getCartItems,
   cleanCartItems,
 } from '../../Redux/Actions/actions';
+
+// Importa las imágenes desde assets
+import banner1 from '../../assets/img/logoprueba1.png';
+import banner2 from '../../assets/img/logoprueba2.png';
+import banner3 from '../../assets/img/logoprueba3.png';
 
 export default function HomeProducts() {
   const dispatch = useDispatch();
@@ -28,7 +34,11 @@ export default function HomeProducts() {
     return { Authorization: `Bearer ${userInfo.token}` };
   }, [userInfo.token]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, ] = useState(false);
+
+  // Estado del carrusel
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const bannerImages = [banner1, banner2, banner3];
 
   useEffect(() => {
     setLoading(true);
@@ -54,25 +64,64 @@ export default function HomeProducts() {
     };
   }, [dispatch, userInfo.token, headers, id]);
 
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === bannerImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? bannerImages.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
-    <Container>
-      <Carousel interval={3000} style={{ height: '50vh' }}>
-        {products.map((product) => (
-          <Carousel.Item key={product.id}>
-            <img
-              className="d-block w-100"
-              src={product.image}
-              alt={product.name}
+    <div>
+      {/* Carrusel */}
+      <div className="relative w-full overflow-hidden ">
+        <div
+          className="relative w-full h-60 flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {bannerImages.map((src, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 w-full h-full"
               style={{
-                height: '50vh',
-                objectFit: 'cover',
-                position: 'relative',
+                backgroundImage: `url(${src})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
               }}
-            />
-            <img src={logoA} alt="Logo" className="watermark" />
-          </Carousel.Item>
-        ))}
-      </Carousel>
+            ></div>
+          ))}
+        </div>
+        {/* Botones de navegación */}
+        <button
+          onClick={prevSlide}
+          className="absolute ml-4 top-1/2 left-0 transform -translate-y-1/2 bg-white p-2 text-gray-800 rounded-full shadow-md hover:bg-gray-200"
+        >
+          &lt;
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute mr-4 top-1/2 right-0 transform -translate-y-1/2 bg-white p-2 text-gray-800 rounded-full shadow-md hover:bg-gray-200"
+        >
+          &gt;
+        </button>
+        {/* Indicadores */}
+        <div className="absolute bottom-0 left-0 w-full flex justify-center mb-4">
+          {bannerImages.map((_, index) => (
+            <button
+              key={index}
+              className={`w-3 h-3 mx-1 rounded-full ${currentIndex === index ? 'bg-white opacity-75' : 'bg-white opacity-50'}`}
+              aria-label={`Slide ${index + 1}`}
+              onClick={() => setCurrentIndex(index)}
+            ></button>
+          ))}
+        </div>
+      </div>
+
       <h2 className="text-center text-3xl font-bold text-yellow-600 my-8 tracking-widest">
         NUESTROS PRODUCTOS
       </h2>
@@ -111,99 +160,10 @@ export default function HomeProducts() {
           </>
         )}
       </div>
-      <Container className="container_icons mt-40">
-        {' '}
-        <Row className="justify-content-center">
-          <Col xs={12} sm={6} lg={4} className="d-flex">
-            <div className="inner-sin-feature">
-              <div className="icon d-inline-block">
-                <FaHandHoldingUsd />
-              </div>
-              <div className="f-content">
-                <h6>Paga seguro, fácil y rápido con Bancolombia</h6>
-                <div >
-                  <img
-                    src={Wompy}
-                    alt="Wompy Bancolombia"
-                    className="HomeProducts-img-small"
-                  />
-                  <img
-                    src={MediosPago}
-                    alt="Medios de pago"
-                    className="HomeProducts-img-small"
-                  />
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col xs={12} sm={6} lg={4} className="d-flex">
-            <div className="inner-sin-feature">
-              <div className="icon d-inline-block">
-                <FaWhatsapp style={{ fontSize: '2rem', color: '#25D366' }} />
-              </div>
-              <div className="f-content">
-                <h6 >Atención al cliente</h6>
-                <p>Tienes dudas?, contactanos. Click whatsapp</p>
-                <a 
-                  href="https://wa.me/1234567890" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="whatsapp-link"
-
-                >
-                  <FaWhatsapp style={{ 
-                      fontSize: '4rem', 
-                      color: '#25D366', 
-                      display: 'block', 
-                      margin: '0 auto' , 
-                      marginTop:'12%'
-                    }}  />
-                </a>
-              </div>
-            </div>
-          </Col>
-          <Col xs={12} sm={6} lg={4} className="d-flex">
-            <div className="inner-sin-feature">
-              <div className="icon d-inline-block">
-                <FaPercentage />
-              </div>
-              <div className="f-content">
-                <h6>Ofertas y promociones</h6>
-                <p>Síguenos en redes y encuentra ofertas.</p>
-                <div className="social-icons" style={{display:'flex', gap:'20', marginLeft:'40%', marginTop:'10%'}}>
-                  <a 
-                    href="https://www.instagram.com/sunyagaleriadelartesano/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="instagram-link"
-                  >
-                    <FaInstagram 
-                      style={{ 
-                        fontSize: '4rem', 
-                        color: '#E4405F', // Color original de Instagram
-                        marginRight: '10px'
-                      }}  
-                    />
-                  </a>
-                  <a 
-                    href="https://www.facebook.com/sunyagaleriadelartesano" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="facebook-link"
-                  >
-                    <FaFacebookF 
-                      style={{ 
-                        fontSize: '4rem', 
-                        color: '#1877F2', // Color original de Facebook
-                      }}  
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </Container>
+    </div>
   );
 }
+
+
+
+

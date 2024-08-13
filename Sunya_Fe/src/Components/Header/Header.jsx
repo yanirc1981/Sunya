@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { FaSignOutAlt, FaLock, FaUserPlus, FaHome } from 'react-icons/fa';
+import { FaSignOutAlt,  FaHome } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { cleanDetailUser } from '../../Redux/Actions/actions';
@@ -52,24 +52,24 @@ function Header() {
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-6 ">
-            <NavLink to="/carousel_products" className="py-3 px-2 text-gray-700  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
+            {/* <NavLink to="/carousel_products" className="py-3 px-2 text-gray-700  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
               PRODUCTOS
-            </NavLink>
+            </NavLink> */}
             {/* <NavLink to="/partner" className="py-4 px-2 text-gray-500 hover:text-green-500">
               ALIADOS
             </NavLink> */}
             <NavLink to="/company" className="py-3 px-2 text-gray-500  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
-              EMPRESA
+              Quienes Somos?
             </NavLink>
             <NavLink to="/social" className="py-3 px-2 text-gray-500  hover:text-white hover:bg-green-500 rounded-md  text-sm font-medium">
-              NOTICIAS
+              Contáctanos
             </NavLink>
 
             {isAdmin || isSuperAdmin || isClient || isCashier ? (
               <div className="relative inline-block text-left" ref={dropdownRef}>
                 <div>
                   <button onClick={handleToggleDropdown} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Hola!, {userInfo.user.name || userInfo.user.nameCompany}
+                    {userInfo.user.name || userInfo.user.nameCompany}
                   </button>
                 </div>
                 {isDropdownOpen && (
@@ -105,22 +105,22 @@ function Header() {
             ) : (
               <div className="relative inline-block text-left" ref={dropdownRef}>
                 <div>
-                  <button onClick={handleToggleDropdown} type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    CONECTAR
+                  <button onClick={handleToggleDropdown} type="button" className=" inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-botonVerde text-sm font-medium text-white hover:bg-green-600">
+                    Ingresar
                   </button>
                 </div>
                 {isDropdownOpen && (
                   <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
                       <NavLink to="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <FaLock /> Iniciar Sesión
+                         Iniciar Sesión
                       </NavLink>
                       <NavLink to="/registrar" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <FaUserPlus /> Crear Cuenta
+                        Crear Cuenta
                       </NavLink>
                       <div className="border-t border-gray-100"></div>
                       <NavLink to="/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                        <FaHome /> Inicio
+                         Inicio
                       </NavLink>
                     </div>
                   </div>

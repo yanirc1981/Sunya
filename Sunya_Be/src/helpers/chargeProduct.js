@@ -7,6 +7,7 @@ module.exports = async () => {
       name: 'Manteles',
       slug: 'Caminos de mesa',
       category: 'Artesania',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723460239/WhatsApp_Image_2024-07-05_at_22.21.41_3_sqzmwo.jpg'],
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723460239/WhatsApp_Image_2024-07-05_at_22.21.41_3_sqzmwo.jpg',
       price: 12000,
       countInStock: 10,
@@ -18,7 +19,12 @@ module.exports = async () => {
       name: 'Laveros',
       slug: 'Llaveros ',
       category: 'Artesania',
+
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/c_pad,b_gen_fill,w_720,h_1280/v1723461970/WhatsApp_Image_2024-07-05_at_22.21.41_vo3eyt.jpg',
+
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723461970/WhatsApp_Image_2024-07-05_at_22.21.41_vo3eyt.jpg'],
+      image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461970/WhatsApp_Image_2024-07-05_at_22.21.41_vo3eyt.jpg',
+
       price: 12000,
       countInStock: 20,
       brand: 'Sunya Artesanías',
@@ -29,6 +35,7 @@ module.exports = async () => {
       name: 'Jarrones',
       slug: 'Jarrones',
       category: 'Artesania',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723461938/WhatsApp_Image_2024-07-05_at_22.21.41_1_fjwnlc.jpg','https://res.cloudinary.com/djkq5h1et/image/upload/v1723461938/WhatsApp_Image_2024-07-05_at_22.21.41_1_fjwnlc.jpg'],
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461938/WhatsApp_Image_2024-07-05_at_22.21.41_1_fjwnlc.jpg',
       price: 3500,
       countInStock: 15,
@@ -40,6 +47,7 @@ module.exports = async () => {
       name: 'Sahumerios',
       slug: 'Caja x 10',
       category: 'Artesania',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723461930/WhatsApp_Image_2024-07-05_at_22.21.40_wr4n3h.jpg'],
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461930/WhatsApp_Image_2024-07-05_at_22.21.40_wr4n3h.jpg',
       price: 12000,
       countInStock: 14,
@@ -51,6 +59,7 @@ module.exports = async () => {
       name: 'Bolsos',
       slug: 'Bolsos Artesanales',
       category: 'Artesania',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723461918/WhatsApp_Image_2024-07-05_at_22.21.40_1_vaklqx.jpg'],
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461918/WhatsApp_Image_2024-07-05_at_22.21.40_1_vaklqx.jpg',
       price: 8000,
       countInStock: 14,
@@ -61,7 +70,12 @@ module.exports = async () => {
     {
       name: 'Bolsos Tejidos',
       slug: 'Bolsos grandes',
+
       category: 'Artesania',
+
+      category: 'Artesanía',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723461924/WhatsApp_Image_2024-07-05_at_22.21.40_2_mdt8hr.jpg','https://res.cloudinary.com/djkq5h1et/image/upload/v1723461924/WhatsApp_Image_2024-07-05_at_22.21.40_2_mdt8hr.jpg'],
+
       image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723461924/WhatsApp_Image_2024-07-05_at_22.21.40_2_mdt8hr.jpg',
       price: 5000,
       countInStock: 25,
@@ -78,6 +92,7 @@ module.exports = async () => {
         slug: e.slug,
         category: e.category,
         image: e.image,
+        images: e.images,
         price: e.price,
         id_taxes: e.id_taxes,
         countInStock: e.countInStock,

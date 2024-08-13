@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import CheckoutSteps from '../CheckoutSteps/CheckoutSteps';
 import { useDispatch, useSelector } from 'react-redux';
-import './payment.css';
 import { saveMethodPayment } from '../../Redux/Actions/actions';
 import { cleanPaymentsTypeSiigo, getPaymentsTypeSiigo } from '../../Redux/ActionsSiigo/actionsSiigo';
+import CheckoutSteps from '../CheckoutSteps/CheckoutSteps';
 
 export default function PaymentMethod() {
   const history = useHistory();
@@ -15,6 +12,7 @@ export default function PaymentMethod() {
   const paymentMethod = useSelector((state) => state.paymentMethod);
   const paymentsType = useSelector((state) => state.paymentsType);
   const role = userInfo?.user?.id_role;
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [paymentMethodName, setPaymentMethod] = useState(paymentMethod || "");
 
@@ -47,32 +45,41 @@ export default function PaymentMethod() {
   : paymentsType;
 
   return (
-    <div className="container_payment">
+    <div className="p-6 mx-auto max-w-4xl">
       <CheckoutSteps step1 step2 step3 />
-      <div className="container small-container flex-column-container">
-        <h2 className="my-3">Método de pago</h2>
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="paymentMethodSelect">
-            <Form.Label>Selecciona un método de pago</Form.Label>
-            <Form.Control
-              as="select"
+      <div className="flex flex-col items-center">
+        <h2 className="text-2xl font-bold my-6">Método de pago</h2>
+        <form onSubmit={submitHandler} className="w-full max-w-md space-y-6">
+          <div className="mb-4">
+            <label
+              htmlFor="paymentMethodSelect"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Selecciona un método de pago
+            </label>
+            <select
+              id="paymentMethodSelect"
               value={paymentMethodName}
               onChange={(e) => setPaymentMethod(e.target.value)}
-              className="form-control-lg"
+              className="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             >
-              <option>Selecciona una opcion</option>
+              <option value="">Selecciona una opción</option>
               {allowedPayments.map((payment) => (
                 <option key={payment.id} value={payment.name}>
                   {payment.name}
                 </option>
               ))}
-            </Form.Control>
-          </Form.Group>
-          <div className="mb-3">
-            <Button type="submit">Continuar</Button>
+            </select>
           </div>
-        </Form>
+          <button
+            type="submit"
+            className="w-full bg-botonVerde text-white font-bold py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Continuar
+          </button>
+        </form>
       </div>
     </div>
   );
 }
+

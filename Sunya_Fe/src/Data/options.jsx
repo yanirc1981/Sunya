@@ -4,7 +4,7 @@ export const person_type = [
 ];
 
 export const identificationOptions = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   { value: "13", label: "Cédula" },
   { value: "31", label: "NIT" },
   { value: "22", label: "Cédula de extranjería" },
@@ -24,7 +24,7 @@ export const identificationOptions = [
 ];
 
 export const check_digitOptions = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   { value: "0", label: 0 },
   { value: "1", label: 1 },
   { value: "2", label: 2 },
@@ -38,7 +38,7 @@ export const check_digitOptions = [
 ];
 
 export const fiscal_responsibilitiesOptions = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   { value: "R-99-PN", label: "No Aplica - Otros*" },
   { value: "O-13", label: "Gran contribuyente" },
   { value: "O-15", label: "Autorretenedor" },
@@ -46,7 +46,7 @@ export const fiscal_responsibilitiesOptions = [
   { value: "O-47", label: "Régimen simple de tributación" },
 ];
 export const state_codeOptions = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   { value: "05", label: "Antioquía" },
   { value: "91", label: "Amazonas" },
   { value: "81", label: "Arauca" },
@@ -81,7 +81,7 @@ export const state_codeOptions = [
 ];
 
 export const city_codeOptions = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   { value: "50006", label: "Acacías - Meta" },
   { value: "85010", label: "label:'Aguazul - Casanare" },
   { value: "50110", label: "Barranca De Upía - Meta" },
@@ -127,7 +127,7 @@ export const city_codeOptions = [
 ];
 
 export const Indicativo_Options = [
-    { value: "", label: "Seleccione una opción" },
+    { value: "", label: "Selecciona" },
     {value:"57", label:"57 - Celular"},
     {value:"601", label:"601 - Cundinamarca - Bogotá"},
     {value:"602", label:"602 - Cauca - Nariño - Valle"},               
@@ -140,7 +140,7 @@ export const Indicativo_Options = [
     
 ]
 export const Contact_Indicativo_Options = [
-  { value: "", label: "Seleccione una opción" },
+  { value: "", label: "Selecciona" },
   {value:"57", label:"57 - Celular"},
   {value:"601", label:"601 - Cundinamarca - Bogotá"},
   {value:"602", label:"602 - Cauca - Nariño - Valle"},               

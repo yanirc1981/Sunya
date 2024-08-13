@@ -101,7 +101,11 @@ const NewProduct = ({ setShowModalA }) => {
         }
       );
       const fileData = await response.json();
-      return fileData.secure_url;
+      
+     
+      const transformedUrl = fileData.secure_url + "?w=300&h=300&c_fill";
+      
+      return transformedUrl;
     });
 
     try {
