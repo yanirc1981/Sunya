@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +16,7 @@ export default function Cart() {
   const dispatch = useDispatch();
   const history = useHistory();
   const userInfo = useSelector((state) => state.userInfo);
-  const products = useSelector((state) => state.products);
+  
   const cartItems = useSelector((state) => state.cartItems);
   const id = userInfo?.user?.id;
   const role = userInfo?.user?.id_role;
@@ -23,8 +24,7 @@ export default function Cart() {
     return { Authorization: `Bearer ${userInfo.token}` };
   }, [userInfo.token]);
 
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [selectedProducts, setSelectedProducts] = useState({});
+
 
   useEffect(() => {
     if (userInfo.token) {
@@ -85,27 +85,7 @@ export default function Cart() {
     }
   };
 
-  const handleAddProducts = () => {
-    setShowSidebar(true);
-  };
-
-  const handleSidebarClose = () => {
-    setShowSidebar(false);
-  };
-
-  const handleProductChange = (productId, quantity) => {
-    setSelectedProducts(prev => ({
-      ...prev,
-      [productId]: quantity
-    }));
-  };
-
-  const handleAddSelectedProducts = async () => {
-    for (const [productId, quantity] of Object.entries(selectedProducts)) {
-      await updateCartHandler(productId, quantity);
-    }
-    setShowSidebar(false);
-  };
+  
 
   return (
     <div className="container mx-auto p-4">

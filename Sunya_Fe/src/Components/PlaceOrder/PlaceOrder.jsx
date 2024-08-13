@@ -14,6 +14,7 @@ import {
 } from '../../Redux/Actions/actions';
 import './placeorder.css';
 import { cleanPaymentsTypeSiigo, getPaymentsTypeSiigo } from '../../Redux/ActionsSiigo/actionsSiigo';
+import Swal from 'sweetalert2';
 
 export default function PlaceOrder() {
   const history = useHistory();
@@ -63,7 +64,18 @@ export default function PlaceOrder() {
       
       if (response.success) {
         dispatch(deleteCartUser({ headers }));
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: '¡Orden creada correctamente!.',
+        });
         history.push(`/order/${response.orderId}`);
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al crear la orden',
+          text: response.errorMessage || 'Ocurrió un error inesperado.',
+        });
       }
     } catch (error) {
       console.error('Hubo un error al crear la orden:', error);

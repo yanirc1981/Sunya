@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
       price_list_position: positionNumber,
       unit: product.unid,
       image:product.image,
-      images: product.images || [], 
+      images: images, 
       brand: product.brand,
       description: product.description,
       price: parseFloat(product.price),
