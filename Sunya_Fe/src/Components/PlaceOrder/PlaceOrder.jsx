@@ -194,6 +194,9 @@ export default function PlaceOrder() {
                       type="button"
                       onClick={placeOrderHandler}
                       disabled={cartItems.length === 0}
+                      style={{
+                        backgroundColor:'#22c55e'
+                      }}
                     >
                       Generar pedido
                     </Button>

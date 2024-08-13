@@ -15,6 +15,7 @@ module.exports = async (req, res) => {
     const taxConsumptionValue = parseInt(product.taxConsumptionValue || '0', 10);
     const idNumber = parseInt(product.idTax, 10);
     const positionNumber = parseInt(product.position, 10);
+    const images = Array.isArray(product.images) ? product.images : JSON.parse(product.images || '[]');
     
     await Product.create({
       name: product.name,
@@ -29,6 +30,7 @@ module.exports = async (req, res) => {
       currency_code: product.currencyCode,
       price_list_position: positionNumber,
       unit: product.unid,
+      image:product.image,
       images: product.images || [], 
       brand: product.brand,
       description: product.description,

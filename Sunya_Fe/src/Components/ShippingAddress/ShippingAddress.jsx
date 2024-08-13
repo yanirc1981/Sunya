@@ -198,7 +198,9 @@ export default function ShippingAddress() {
             </Form.Select>
           </Form.Group>
           <div className="mb-3">
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" style={{
+              background:'#22c55e'
+            }}>
               Continuar
             </Button>
           </div>

@@ -60,6 +60,10 @@ module.exports = (sequelize) => {
         allowNull: true,
         defaultValue: [], // Establece un valor por defecto vacío
       },
+      image: {
+        type:DataTypes.STRING,
+        allowNull: true // O false, dependiendo de si quieres que sea obligatorio
+      },
       brand: {
         type: DataTypes.STRING,
         allowNull: false,
