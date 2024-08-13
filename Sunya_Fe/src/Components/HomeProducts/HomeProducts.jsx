@@ -1,11 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Product from '../Product/Product';
 import LoadingBox from '../LoadingBox';
 import MessageBox from '../MessageBox';
 
 import { HomeIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
-
 import { NavLink } from 'react-router-dom';
 import './homeproducts.css';
 import {
@@ -15,7 +14,6 @@ import {
   cleanCartItems,
 } from '../../Redux/Actions/actions';
 
-// Importa las imágenes desde assets
 import banner1 from '../../assets/img/logoprueba1.png';
 import banner2 from '../../assets/img/logoprueba2.png';
 import banner3 from '../../assets/img/logoprueba3.png';
@@ -30,11 +28,16 @@ export default function HomeProducts() {
     return { Authorization: `Bearer ${userInfo.token}` };
   }, [userInfo.token]);
   const [loading, setLoading] = useState(false);
-  const [error, ] = useState(false);
+  const [error] = useState(false);
 
   // Estado del carrusel
   const [currentIndex, setCurrentIndex] = useState(0);
   const bannerImages = [banner1, banner2, banner3];
+
+  // Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(products.length / itemsPerPage);
 
   useEffect(() => {
     setLoading(true);
@@ -71,6 +74,13 @@ export default function HomeProducts() {
       prevIndex === 0 ? bannerImages.length - 1 : prevIndex - 1
     );
   };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calcular los productos actuales para mostrar en la página
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentProducts = products.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <div>
@@ -110,7 +120,9 @@ export default function HomeProducts() {
           {bannerImages.map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 mx-1 rounded-full ${currentIndex === index ? 'bg-white opacity-75' : 'bg-white opacity-50'}`}
+              className={`w-3 h-3 mx-1 rounded-full ${
+                currentIndex === index ? 'bg-white opacity-75' : 'bg-white opacity-50'
+              }`}
               aria-label={`Slide ${index + 1}`}
               onClick={() => setCurrentIndex(index)}
             ></button>
@@ -138,27 +150,61 @@ export default function HomeProducts() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <>
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white shadow-lg rounded-lg p-4 flex flex-col"
-              >
-                <Product product={product} />
-              </div>
-            ))}
-          </>
-        )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-2 md:px-4 lg:px-8">
+  {loading ? (
+    <LoadingBox />
+  ) : error ? (
+    <MessageBox variant="danger">{error}</MessageBox>
+  ) : (
+    <>
+      {currentProducts.map((product) => (
+        <div
+          key={product.id}
+          className="bg-white shadow-lg rounded-lg p-4 flex flex-col mx-1 sm:mx-1 lg:mx-4 sm:p-3 lg:p-4 sm:max-w-xs lg:max-w-full"
+        >
+          <Product product={product} />
+        </div>
+      ))}
+    </>
+  )}
+</div>
+
+
+
+      {/* Paginación */}
+      <div className="flex justify-center mt-10 mb-10">
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 mx-1 text-gray-600 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Anterior
+        </button>
+        {[...Array(totalPages).keys()].map((page) => (
+          <button
+            key={page + 1}
+            onClick={() => paginate(page + 1)}
+            className={`px-4 py-2 mx-1 ${
+              currentPage === page + 1
+                ? 'bg-yellow-600 text-white'
+                : 'bg-gray-200 text-gray-600'
+            } rounded`}
+          >
+            {page + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 mx-1 text-gray-600 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Siguiente
+        </button>
       </div>
     </div>
   );
 }
+
 
 
 

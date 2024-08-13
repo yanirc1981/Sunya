@@ -76,6 +76,31 @@ module.exports = async () => {
       code: "Item-06",
       description: 'Hermosos bolsos tejidos a mano, grandes',
     },
+    {
+      name: 'Adornos',
+      slug: 'Calaveras ',
+      category: 'Artesanía',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723437141/ouk4qntnavbioci4efxw.jpg','https://res.cloudinary.com/djkq5h1et/image/upload/w_1000,ar_1:1,c_fill,g_auto,e_art:hokusai/v1723437141/ouk4qntnavbioci4efxw.jpg'],
+      image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723437141/ouk4qntnavbioci4efxw.jpg',
+      price: 5000,
+      countInStock: 25,
+      brand: 'Sunya Artesanías',
+      code: "Item-07",
+      description: 'Decoración del hogar, pintadas a mano',
+    },
+    {
+      name: 'Floreros',
+      slug: 'Grandes',
+      category: 'Artesanía',
+      images: ['https://res.cloudinary.com/djkq5h1et/image/upload/v1723417396/WhatsApp_Image_2024-07-05_at_22.21.42_htxwog.jpg','https://res.cloudinary.com/djkq5h1et/image/upload/e_improve,w_300,h_600,c_thumb,g_auto/v1723417396/WhatsApp_Image_2024-07-05_at_22.21.42_htxwog.jpg'],
+      image: 'https://res.cloudinary.com/djkq5h1et/image/upload/v1723417396/WhatsApp_Image_2024-07-05_at_22.21.42_htxwog.jpg',
+      price: 5000,
+      countInStock: 25,
+      brand: 'Sunya Artesanías',
+      code: "Item-08",
+      description: 'Hechos a mano, artesanales',
+    },
+ 
   ];
 
   if (products.length <= 0) {
